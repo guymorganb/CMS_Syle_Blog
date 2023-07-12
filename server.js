@@ -9,14 +9,17 @@ const PORT = 3001 || process.env.PORT;                                  // Defin
 const exphbs = require('express-handlebars');                           // Import the Express Handlebars module
 const path = require('path');                                           // Import the path module
 const helpers = require('./utils/helpers.js');                          // Import the helper functions
-const hbs = exphbs.create({ helpers });                           // Create an instance of Express Handlebars with helpers
+const hbs = exphbs.create({                                             // Create an instance of Express Handlebars with helpers and default layout
+    helpers: helpers,
+    defaultLayout: 'main' 
+});                           
 
 app.engine('handlebars', hbs.engine);                               // Set the handlebars engine for rendering views
 app.set('view engine', 'handlebars');
 
 app.use(express.json());                                                // Parse JSON bodies sent in requests
 app.use(express.urlencoded({ extended: true }));                 // Parse URL-encoded bodies sent in requests
-app.use(express.static(path.join(__dirname, 'public')));                // Serve static files from the 'public' directory
+app.use(express.static(path.join(__dirname, 'public')));          // Serve static files from the 'public' directory
 app.use(routes); // Use the defined routes
 
 sequelize.sync({ force: false }).then(() => {            // Sync the Sequelize models with the database (force: false to preserve data)

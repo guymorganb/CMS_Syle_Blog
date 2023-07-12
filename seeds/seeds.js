@@ -1,7 +1,3 @@
-/**
- * Seed database
- */
-
 const sequelize = require('../config/dbconnection');
 const User = require('../models/users');
 const Post = require('../models/posts');
@@ -12,6 +8,9 @@ const seedDatabase = async () => {
     try {
         await sequelize.sync({ force: true });
 
+        const usernameToId = {};
+
+        // First pass: Create all users and their posts
         for (const userData of seedData) {
             const { username, role, created_at, posts } = userData;
 
@@ -19,6 +18,8 @@ const seedDatabase = async () => {
             let user;
             try {
                 user = await User.create({ username, role, created_at });
+                usernameToId[username] = user.id;
+                console.log(`User ${username} created with ID: ${user.id}`);
             } catch (error) {
                 console.error('Failed to seed user:', error);
                 continue; // skip to the next user if failed
@@ -26,23 +27,45 @@ const seedDatabase = async () => {
 
             // Seed posts
             for (const postData of posts) {
-                const { title, body, comments } = postData;
+                const { title, body } = postData;
 
-                let post;
                 try {
-                    post = await Post.create({ title, body, user_id: user.id });
+                    await Post.create({ title, body, user_id: user.id });
                 } catch (error) {
                     console.error('Failed to seed post:', error);
                     continue; // skip to the next post if failed
                 }
+            }
+        }
 
-                // Seed comments
+        // Second pass: Create all comments
+        for (const userData of seedData) {
+            const { username, posts } = userData;
+
+            const user = await User.findOne({ where: { username: username } });
+
+            // Seed comments
+            for (const postData of posts) {
+                const { comments } = postData;
+
+                const post = await Post.findOne({
+                    where: { title: postData.title, user_id: user.id },
+                });
+
                 for (const commentData of comments) {
-                    const { content, created_at: comment_created_at } = commentData;
+                    const { content, created_at: comment_created_at, username: comment_username } = commentData;
+
+                    const comment_user = await User.findOne({ where: { username: comment_username } });
+
+                    if (!comment_user) {
+                        console.error(`No user found with username ${comment_username}`);
+                        continue;
+                    }
+
                     try {
                         await Comment.create({
                             content,
-                            user_id: user.id,
+                            user_id: comment_user.id,
                             post_id: post.id,
                             created_at: comment_created_at,
                         });
@@ -63,4 +86,6 @@ const seedDatabase = async () => {
 };
 
 seedDatabase();
+
+
 
