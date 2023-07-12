@@ -1,0 +1,89 @@
+[
+  {
+    "username": "JohnDoe",
+    "role": "admin",
+    "created_at": "2023-07-01 10:00:00",
+    "posts": [
+      {
+        "title": "Introduction to Tech Blogging",
+        "body": "In this post, we will explore the basics of tech blogging.",
+        "comments": [
+          {
+            "content": "Great post!",
+            "created_at": "2023-07-01 11:00:00"
+          },
+          {
+            "content": "Thanks for sharing!",
+            "created_at": "2023-07-01 12:00:00"
+          }
+        ]
+      },
+      {
+        "title": "Tips for Writing Engaging Tech Content",
+        "body": "Learn some valuable tips for writing engaging tech content.",
+        "comments": [
+          {
+            "content": "Nice work!",
+            "created_at": "2023-07-01 13:00:00"
+          },
+          {
+            "content": "Looking forward to more!",
+            "created_at": "2023-07-01 14:00:00"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "username": "JaneSmith",
+    "role": "user",
+    "created_at": "2023-07-02 12:30:00",
+    "posts": [
+      {
+        "title": "The Latest Tech Innovations",
+        "body": "Discover the latest tech innovations that are shaping the future.",
+        "comments": [
+          {
+            "content": "Great read!",
+            "created_at": "2023-07-02 13:30:00"
+          },
+          {
+            "content": "Very informative.",
+            "created_at": "2023-07-02 14:30:00"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "username": "MikeJohnson",
+    "role": "user",
+    "created_at": "2023-07-03 14:45:00",
+    "posts": [
+      {
+        "title": "The Impact of AI in Tech Industry",
+        "body": "Explore the impact of AI on various sectors of the tech industry.",
+        "comments": [
+          {
+            "content": "Interesting article!",
+            "created_at": "2023-07-03 15:45:00"
+          },
+          {
+            "content": "Well-written and thought-provoking.",
+            "created_at": "2023-07-03 16:45:00"
+          }
+        ]
+      },
+      {
+        "title": "The Future of Robotics",
+        "body": "Learn about the advancements and potential of robotics in the future.",
+        "comments": [
+          {
+            "content": "Fascinating topic!",
+            "created_at": "2023-07-03 17:45:00"
+          }
+        ]
+      }
+    ]
+  }
+]

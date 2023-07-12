@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "seeds": "node seeds/seeds.js"
   },
   "keywords": [],
   "author": "",
@@ -18,7 +19,11 @@
     "express-handlebars": "^7.0.7",
     "express-session": "^1.17.3",
     "mysql2": "^3.5.1",
+    "path": "^0.12.7",
     "sequelize": "^6.32.1",
     "sequelize-auto": "^0.8.8"
+  },
+  "devDependencies": {
+    "@types/sequelize": "^4.28.15"
   }
 }

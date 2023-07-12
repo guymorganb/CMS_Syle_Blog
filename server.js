@@ -1,20 +1,28 @@
 /**
- * Server Routes
+ * Setup server & Routes
  */
-const express = require('express')
-const routes = require('./routes');
-const sequelize = require('./config/dbconnection')
-const app = express();
-const PORT = 3001 || process.env.PORT
+const express = require('express');                                     // Import the Express module
+const routes = require('./controllers');                                // Import the routes from the controllers file
+const sequelize = require('./config/dbconnection.js');                  // Import the Sequelize instance from the dbconnection.js file
+const app = express();                                                  // Create an instance of the Express application
+const PORT = 3001 || process.env.PORT;                                  // Define the port for the server to listen on
+const exphbs = require('express-handlebars');                           // Import the Express Handlebars module
+const path = require('path');                                           // Import the path module
+const helpers = require('./utils/helpers.js');                          // Import the helper functions
+const hbs = exphbs.create({ helpers });                           // Create an instance of Express Handlebars with helpers
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }))
+app.engine('handlebars', hbs.engine);                               // Set the handlebars engine for rendering views
+app.set('view engine', 'handlebars');
 
-app.use(routes);
+app.use(express.json());                                                // Parse JSON bodies sent in requests
+app.use(express.urlencoded({ extended: true }));                 // Parse URL-encoded bodies sent in requests
+app.use(express.static(path.join(__dirname, 'public')));                // Serve static files from the 'public' directory
+app.use(routes); // Use the defined routes
 
-sequelize.sync({force: false}).then(()=>{
-    app.listen(PORT, () => console.log('Server Listening!'))
-})
+sequelize.sync({ force: false }).then(() => {            // Sync the Sequelize models with the database (force: false to preserve data)
+    app.listen(PORT, () => console.log('Server Listening!'));   // Start the server and listen on the specified port
+});
+
 
 
 /**
