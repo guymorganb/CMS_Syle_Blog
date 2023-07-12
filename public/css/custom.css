@@ -9,6 +9,13 @@ h1.metallic-text {
     animation: ColorChange 5s infinite;
     text-shadow: 0px 0px 5px #fff, 0px 0px 10px #fff, 0px 0px 15px #fff, 0px 0px 20px #fff;
 }
+h2 {
+    background-color: #f0f0f0; /* light grey background */
+    padding: 20px; /* space around text */
+    border-radius: 10px; /* rounded corners */
+    width: fit-content; /* just wrap the content */
+    margin: auto; /* center the element */
+}
 
 @keyframes ColorChange {
     0% {-webkit-text-fill-color: #747474;}
@@ -17,6 +24,74 @@ h1.metallic-text {
     75% {-webkit-text-fill-color: #a7a7a7;}
     100% {-webkit-text-fill-color: #747474;}
 }
+
+.post-container {
+    background-color: #192440; /* Set the background color */
+    border: 2px solid #555; /* Adjust border color */
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Add box shadow */
+}
+
+.post-title-container {
+    display: flex;
+    justify-content: space-between;
+    text-align: left;
+    background-color: #f0f0f0; /* Set a light background color for content */
+    border: 2px solid #555; /* Adjust border color */
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Add box shadow */
+}
+
+.post-title {
+    flex-grow: 1;
+    margin-right: 10px;
+    font-family: 'Roboto Slab', serif;
+    font-weight: bolder;
+}
+
+.post-author {
+    text-align: right;
+    font-family: 'Caveat', serif;
+    font-weight: bolder;
+}
+
+.post-content {
+    margin-bottom: 10px;
+    background-color: #f0f0f0; /* Set a light background color for content */
+    border: 2px solid #555; /* Adjust border color */
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Add box shadow */
+    font-family: 'Playfair Display', serif;
+}
+
+.comment-container {
+    display: flex;
+    justify-content: space-between; 
+    background-color: #f0f0f0; /* Set a light background color for content */
+    border: 2px solid #555; /* Adjust border color */
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Add box shadow */
+}
+
+.comment-content {
+    margin-right: 10px;
+    font-family: 'Rajdhani', serif;
+}
+
+.comment-author {
+    text-align: right; /* Ensure text inside the author is aligned to the right */
+    font-family: 'Caveat', serif;
+    font-weight: bolder;
+}
+
 
 h2 {
     font-size: 2.8rem !important;
@@ -153,36 +228,11 @@ a:hover, button:hover {
     color: #ffffff;
 }
 
-/********** copyright **********/
-#copyright {
-    background: #192440;
-    padding: 2rem 3rem;
-}
-
-#copyright #social-media a {
-    width: 40px;
-    height: 40px;
-    border-radius: 99%;
-    background: #ffffff;
-    transition: .4s ease;
-}
-
-#copyright #social-media a i {
-    color: #192440;
-    font-size: 1.2rem;
-    line-height: 40px;
-}
-
-#copyright #social-media a:hover {
-    background: #00FFAD;
-}
-
-#copyright #social-media a:hover i {
-    color: #ffffff;
-}
 
 @media (min-width: 576px) {
     h1 {
         font-size: 4.5rem;  /* Adjust this value as needed */
     }
 }
+
+
