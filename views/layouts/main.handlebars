@@ -7,6 +7,16 @@
     <link rel="icon" href="/img/favicon.png" sizes="32x32" type="image/png">
     <!-- custom.css -->
     <link rel="stylesheet" href="/css/custom.css">
+    {{#if isLoginTemplate}}
+    <!-- login css -->
+    <link rel="stylesheet" href="/css/login.css">
+    {{/if}}
+    {{#if isSignUpTemplate}}
+    <!-- login css -->
+    <link rel="stylesheet" href="/css/signUp.css">
+    {{/if}}
+    
+
     <!-- bootstrap.min.css -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <!-- font-awesome -->
@@ -21,6 +31,13 @@
 <body>
 {{{body}}}
 </body>
+{{#if isDashboardTemplate}}
+<script src="/js/loginValidation.js"></script>
+{{/if}}
+
+{{#if isLoginTemplate}}
+<script src="/js/loginValidation.js"></script>
+{{/if}}
 <!-- AOS -->
 <script src="/js/aos.js"></script>
 <script>

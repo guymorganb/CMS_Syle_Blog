@@ -7,8 +7,9 @@
 const Comment = require("./comments");
 const Post = require("./posts");
 const User = require("./users");
+const Session = require('./sessions')
 
-Comment.belongsTo(Post, { as: "post", foreignKey: "post_id"});
+Comment.hasOne(Post, { as: "post", foreignKey: "post_id"});
 
 Post.hasMany(Comment, { as: "comments", foreignKey: "post_id"});
 
@@ -20,10 +21,14 @@ Post.belongsTo(User, { as: "user", foreignKey: "user_id"});
 
 User.hasMany(Post, { as: "posts", foreignKey: "user_id"});
 
+Session.belongsTo(User, { as: "user", foreignKey: "user_id"});
+
+User.hasOne(Session, { as: "sessions", foreignKey: "user_id"});
 
 module.exports = {
   Comment,
   Post,
   User,
+  Session,
 };
 

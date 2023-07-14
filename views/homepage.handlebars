@@ -7,7 +7,7 @@
         </div>
         <div class="col-lg-8 col-md-8 col-sm-12 col-12 align-self-center d-flex flex-lg-row flex-md-column flex-sm-row flex-column justify-content-sm-center">
             <a href="/" class="text-white mr-lg-5 my-lg-0 my-md-2 flex-fill text-center">Home</a>
-            <a href="#" class="text-white mr-lg-5 my-lg-0 my-md-2 flex-fill text-center">Dashboard</a>
+            <a href="/signup" class="text-white mr-lg-5 my-lg-0 my-md-2 flex-fill text-center">Dashboard</a>
             <a href="#" class="text-white my-lg-0 my-md-2 flex-fill text-center">Contact</a>
         </div>
     </div>
@@ -17,17 +17,19 @@
 
         </h1>
         <p data-aos="fade" data-aos-easing="linear" data-aos-duration="1000" data-aos-once="true" class="lead text-white my-4">
-            A place to talk Tech 
+            A place to talk about Tech 
             <br>. . . . . . .a place to learn.
         </p>
         <a href="/login" data-aos="fade" data-aos-easing="linear" data-aos-duration="1000" data-aos-once="true" class="btn my-4 mr-4 font-weight-bold atlas-cta cta-green">Login</a>
 
-        <a href="/signUp" data-aos="fade" data-aos-easing="linear" data-aos-duration="1000" data-aos-once="true" class="btn my-4 font-weight-bold atlas-cta cta-green">Sign-up</a>
+        <a href="/signup" data-aos="fade" data-aos-easing="linear" data-aos-duration="1000" data-aos-once="true" class="btn my-4 font-weight-bold atlas-cta cta-green">Sign-up</a>
     </div>
 </div>
 <!-- three-blcok -->
 <div class="container my-5 py-2">
+    
     <h2 class="text-center font-weight-bold my-5">Most Recent Blogs</h2>
+   
     <div class="col-12">
     {{#each postDataList}}
         <div data-aos="fade-up" data-aos-delay="0" data-aos-duration="1000" data-aos-once="true" class="col-md-12 text-center post-container" style="background-image: url('{{../imageUrl}}')"> <!--The ../ in {{../imageUrl}} tells Handlebars to look in the parent context for the imageUrl variable.-->
