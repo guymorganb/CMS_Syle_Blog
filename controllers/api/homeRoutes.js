@@ -37,7 +37,6 @@ function fetchPostData() {
                     },
                     comments: commentsData
                 };
-                console.log(commentsData)
                 postDataList.push(postData);
             }
 

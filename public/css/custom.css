@@ -193,20 +193,6 @@ a:hover, button:hover {
     background: #00FFAD;
 }
 
-/********** price table **********/
-#price-table {
-    padding-top: 4rem !important;
-    padding-bottom: 4rem !important;
-}
-
-#price-table__premium {
-    background: #192440;
-    color: #ffffff;
-}
-
-#price-table ul li {
-    padding: 5px 0;
-}
 
 /********** contact **********/
 #contact {
