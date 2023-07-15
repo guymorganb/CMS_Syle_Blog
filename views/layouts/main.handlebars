@@ -12,19 +12,20 @@
     <link rel="stylesheet" href="/css/login.css">
     {{/if}}
     {{#if isSignUpTemplate}}
-    <!-- login css -->
+    <!-- signUp css -->
     <link rel="stylesheet" href="/css/signUp.css">
     {{/if}}
-    
-
+    {{#if isNewUserTemplate}}
+    <link rel="stylesheet" href="/css/newUser.css">
+    {{/if}}
     <!-- bootstrap.min.css -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <!-- font-awesome -->
     <link rel="stylesheet" href="/font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Dancing+Script&family=Josefin+Sans:wght@300&family=Playfair+Display:wght@400&family=Rajdhani&family=Roboto+Slab:wght@300&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Dancing+Script&family=Josefin+Sans:wght@300&family=Playfair+Display:wght@400&family=Rajdhani&family=Roboto+Slab:wght@300&display=swap" rel="stylesheet">
     <!-- AOS -->
     <link rel="stylesheet" href="/css/aos.css">
 </head>
@@ -34,9 +35,14 @@
 {{#if isDashboardTemplate}}
 <script src="/js/loginValidation.js"></script>
 {{/if}}
-
+{{#if isSignUpTemplate}}
+<script src="/js/signUpValidation.js"></script>
+{{/if}}
 {{#if isLoginTemplate}}
 <script src="/js/loginValidation.js"></script>
+{{/if}}
+{{#if isNewUserTemplate}}
+<script src="/js/newUser.js"></script>
 {{/if}}
 <!-- AOS -->
 <script src="/js/aos.js"></script>

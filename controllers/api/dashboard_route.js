@@ -1,8 +1,24 @@
 const router = require('express').Router();
 const User = require('../../models/users');
 
+
+// Middleware to check if user is authenticated
+function checkAuth(req, res, next) {
+    // Check if the session exists and is active
+    console.log("req.session: ",req.session)
+    console.log("req.session.user_id: ", req.session.user_id)
+    console.log("req.session.active: ",req.session.active)
+    if (req.session && req.session.user_id && req.session.active) {
+        next(); // User is authenticated, continue to the requested route
+    } else {
+        // Redirect the user to the signup page
+        res.redirect('/signup');
+    }
+}
+
+
 // /dashboard
-router.get('/', (req, res) => {
+router.get('/',checkAuth ,(req, res) => {
     imageUrl = "/img/tech4.png";
  // check if the user session token is already valid
     // if not valid then give them the login screen

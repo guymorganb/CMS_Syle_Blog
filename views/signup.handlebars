@@ -29,35 +29,35 @@
     <div class="col-12 login">
     <div data-aos="fade-left" data-aos-delay="0" data-aos-duration="1000" data-aos-once="true" class="col-md-12 text-center" > 
 <main>
-        <form id="signup_form" class="formula" name="signup_form" method="post" style="background-image: url('{{imageUrl}}')">
-        <div>
-            <label for="firstName">First_Name</label>
-            <input type="text" name="firstName" id="firstName">
+    <form id="signup_form" class="formula" name="signup_form" action="/signup/create" method="post" style="background-image: url('{{imageUrl}}')">
+        <div class="py-2 form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" name="firstName" required placeholder="first name" id="firstName">
             <span></span>
         </div>
-        <div>
-            <label for="lastName">Last_Name</label>
-            <input type="text" name="lastName" id="lastName">
+        <div class="py-2 form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" name="lastName" required placeholder="last name" id="lastName">
             <span></span>
         </div>
-        <div>
-            <label for="email">E-Mail:</label>
-            <input type="text" name="email" id="email">
+        <div class="py-2 form-group">
+            <label for="email">Email</label>
+            <input type="text" name="email" required placeholder="email" id="email">
             <span></span>
         </div>
-        <div>
-            <label for="dob">Date of Birth:</label>
-            <input type="text" name="dob" id="dob">
+        <div class="py-2 form-group">
+            <label for="dob">DOB</label>
+            <input type="text" name="dob" required placeholder="date of birth" id="dob">
             <span></span>
         </div>
-        <div>
+        <div class="py-2 form-group">
             <label for="zip">ZipCode</label>
-            <input type="text" name="zip" id="zip">
+            <input type="text" name="zip" required placeholder="zipcode" id="zip">
             <span></span>
         </div>
-        <div>
-            <label></label>
-            <input type="button" id="save" value="Save">
+        <div class="py-1 form-group btn">
+            <input type="submit" id="Sign-up" name="Sign-up" value="Sign-up">
+            <input type="reset" id="clear" name="clear" value="Clear">
         </div>
     </form>
     </main> 

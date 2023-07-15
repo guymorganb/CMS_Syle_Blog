@@ -77,7 +77,7 @@ User.init( {
       // Use the beforeCreate hook to work with data before a new instance is created
       beforeCreate: (newUserData) => hashPassword(newUserData), //(POST methods)
       // Here, perform a check before updating the database.
-      //beforeUpdate: (newUserData) => hashPassword(newUserData), //(PUT methods)
+      beforeUpdate: (newUserData) => hashPassword(newUserData), //(PUT methods)
       },
 
     sequelize,
