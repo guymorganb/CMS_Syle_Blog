@@ -2,8 +2,7 @@ const router = require('express').Router();
 const User = require('../../models/users');
 const Session = require('../../models/sessions')
 
-// '/login endpoint'
-
+// '/login' endpoint
 router.get('/', (req, res) => {
     let imageUrl;
  // check if the user session token is already valid
@@ -25,7 +24,7 @@ router.get('/', (req, res) => {
             }
         });
 });
-
+// '/login' endpoint
 router.post('/', async (req,res)=>{
     try{
         const userData = await User.findOne({where:{email: req.body.email}})

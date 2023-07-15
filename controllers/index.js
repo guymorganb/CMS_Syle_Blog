@@ -17,7 +17,8 @@ router.use('/login', login)
 // for the dashboard
 router.use('/dashboard', dashboard)
 // for signing up
-/router.use('/signup', signUp)
+router.use('/signup', signUp)
+// for creating a new user
 
 //router.use('./api', Routes)
 

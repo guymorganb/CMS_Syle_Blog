@@ -11,7 +11,7 @@ const displayErrorMsgs = function (msgs) {
     ul.classList.add("messages"); // adds a class to the ul
     // Clear the ul before appending new messages
     while (ul.firstChild) {
-    ul.removeChild(ul.firstChild);
+        ul.removeChild(ul.firstChild);
     }
     for (let msg of msgs) {
         const li = document.createElement("li");
@@ -58,12 +58,14 @@ let validate = async function ()  {
                     msgs[msgs.length] = 'Success!'
                     displayErrorMsgs(msgs)
                     setTimeout(function () {window.location.href = '/dashboard'}, 500);
+                    return;
                 } else {
                     // Display error message from server
                     const data = await response.json();
                     console.error({message: "Server error", Error: data})
                     msgs[msgs.length] = data.message
                     displayErrorMsgs(msgs)
+                    return;
                 }
         }catch(err){
             console.error({message:"Username or Password is incorrect", Error: err})
