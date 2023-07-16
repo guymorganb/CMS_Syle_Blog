@@ -1,5 +1,11 @@
-    <div class="jumbotron jumbotron-fluid" id="banner" style="background-image: url(/img/banner-bk.jpg);">
-    <div class="container text-center text-md-left">
+{{#ifCond isDashboardTemplate '||' isNewPostTemplate}}
+<div class="jumbotron jumbotron-fluid" id="banner" style="background-image: url(/img/banner-bk.jpg);">
+<div class="container text-center text-md-left">
+{{/ifCond}}
+{{#if isViewPostTemplate}}
+<div class="jumbotron jumbotron-fluid" id="banner" style="background-image: url(/img/contact-bk.jpg);">
+<div class="container text-center text-md-left">
+{{/if}}
 <header>
     <div class="row justify-content-between">
         <div class="col-lg-2 col-md-3 col-sm-4 col-6">
@@ -20,11 +26,51 @@
             A place to talk about Tech 
             <br>. . . . . . .a place to learn.
         </p>
-        <a href="/newpost" data-aos="fade" data-aos-easing="linear" data-aos-duration="1000" data-aos-once="true" class="btn my-4 mr-4 font-weight-bold atlas-cta cta-green">New Post +</a>
+        <a href="/dashboard/newpost" data-aos="fade" data-aos-easing="linear" data-aos-duration="1000" data-aos-once="true" class="btn my-4 mr-4 font-weight-bold atlas-cta cta-green">New Post +</a>
     
-        <a href="/dashboard/viewmyposts" data-aos="fade" data-aos-easing="linear" data-aos-duration="1000" data-aos-once="true" class="btn my-4 font-weight-bold atlas-cta cta-green">View my Posts</a>
+        <a href="/dashboard/viewposts" data-aos="fade" data-aos-easing="linear" data-aos-duration="1000" data-aos-once="true" class="btn my-4 font-weight-bold atlas-cta cta-green">View my Posts</a>
     </div>
 </div>
-   <div class="jumbotron jumbotron-fluid col-lg-2 col-md-3 col-sm-4 col-6">
-            <img src={{imageUrl}} alt="placeholder">
+<div class="container my-5 py-2 ">
+{{#if isDashboardTemplate}}
+<div data-aos="fade-right" data-aos-delay="0" data-aos-duration="1000" data-aos-once="true" class="col-md-12 text-center" >
+    <h2 class="text-center font-weight-bold my-5">More content and functionality in the future maybe</h2>
+</div>
+<div data-aos="fade-left" data-aos-delay="0" data-aos-duration="1000" data-aos-once="true" class="col-md-12 text-center" >
+    <div class="jumbotron jumbotron-fluid col-lg-2 col-md-3 col-sm-4 col-6 img-fluid mx-auto d-block" style="border-radius: 10px; background-image: url('{{imageUrl}}');">
+        <img src={{imageUrl}} alt="placeholder" style="border-radius: 10px;">
+    </div>
+</div>
+{{/if}}
+
+{{#if isViewPostTemplate}}
+<div data-aos="fade-right" data-aos-delay="0" data-aos-duration="1000" data-aos-once="true" class="col-md-12 text-center" >
+    <h2 class="text-center font-weight-bold my-5">Your posts</h2>
+</div>
+{{/if}}
+
+{{#if isViewPostTemplate}}
+  {{> viewPost}}
+{{/if}}
+
+{{#if isNewPostTemplate}}
+  {{> newPost}}
+{{/if}}
+</div>
+<div class="jumbotron jumbotron-fluid feature" id="feature-last">
+    <div class="container">
+        <div class="row justify-content-between text-center text-md-left">
+            <div data-aos="fade-left" data-aos-duration="1000" data-aos-once="true" class="col-md-6 flex-md-last">
+                <h3 class="font-weight-bold">Safe and reliable</h3>
+                <p class="my-4">
+                        Maybe some links
+                    <br> More content in here for the footer
+                </p>
+                <a href="#" class="btn my-4 font-weight-bold atlas-cta cta-blue">Click me</a>
+            </div>
+            <div data-aos="fade-right" data-aos-duration="1000" data-aos-once="true" class="col-md-6 align-self-center flex-md-first">
+                <img src="/img/feature-1.png" alt="Safe and reliable" class="mx-auto d-block">
+            </div>
         </div>
+    </div>
+</div>

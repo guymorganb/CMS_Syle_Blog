@@ -1,0 +1,18 @@
+<!-- Partial for new post window that shows up on the dashboard-->
+    <div data-aos="fade-up" data-aos-delay="0" data-aos-duration="1000" data-aos-once="true" class="col-md-12 text-center">
+    <form id="post_form" class="formula" name="post_form" action="/dashboard/viewposts/createnew" method="POST" style="background-image: url('{{imageUrl}}')">
+        <div class="py-2 form-group">
+            <label for="postTitle">Title</label>
+            <input type="text" name="postTitle" required placeholder="Please enter Post title: " id="postTitle">
+            <span></span>
+        </div>
+        <div class="py-2 form-group" >
+            <label for="postContent">Content</label>
+            <textarea name="postContent" required placeholder="Enter your content here" id="postContent" ></textarea>
+            <span></span>
+        </div>
+        <div class="py-1 form-group btn">
+            <input type="submit" id="post-submit" name="post-submit" value="Post">
+        </div>
+    </form>
+</div>

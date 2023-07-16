@@ -1,0 +1,21 @@
+
+
+
+.icon {
+    height: 40px;  /* Set the size of your icons */
+    width: 40px;
+    margin-right: 10px;  /* Give some space between icons */
+    display: inline-block;
+  }
+
+.icon:last-child {
+    margin-right: 0;  /* Remove right margin from last icon */
+}
+
+a, button {
+    cursor: pointer;
+    border: none;
+    border-radius: 10px !important;
+    padding: 10px 20px !important;
+    transition: 0.3s !important;
+}

@@ -11,12 +11,15 @@
     <!-- login css -->
     <link rel="stylesheet" href="/css/login.css">
     {{/if}}
-    {{#if isSignUpTemplate}}
-    <!-- signUp css -->
+    {{#ifCond isSignUpTemplate '||' isNewPostTemplate}} <!-- custom || condition registered in hepler.js -->
+     <!-- sign up css -->
     <link rel="stylesheet" href="/css/signUp.css">
-    {{/if}}
+    {{/ifCond}}
     {{#if isNewUserTemplate}}
     <link rel="stylesheet" href="/css/newUser.css">
+    {{/if}}
+    {{#if isContactTemplate}}
+    <link rel="stylesheet" href="/css/contact.css">
     {{/if}}
     <!-- bootstrap.min.css -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -32,17 +35,43 @@
 <body>
 {{{body}}}
 </body>
-{{#if isDashboardTemplate}}
+{{#if isLoginTemplate}}
 <script src="/js/loginValidation.js"></script>
 {{/if}}
 {{#if isSignUpTemplate}}
 <script src="/js/signUpValidation.js"></script>
 {{/if}}
-{{#if isLoginTemplate}}
-<script src="/js/loginValidation.js"></script>
-{{/if}}
 {{#if isNewUserTemplate}}
 <script src="/js/newUser.js"></script>
+{{/if}}
+{{#if isNewPostTemplate}}
+<script src="/ckeditor/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace( 'postContent', {
+               height: 300,
+        width: '100%',
+        toolbarGroups: [
+            { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
+            { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
+            { name: 'editing', groups: [ 'find', 'selection', 'spellchecker' ] },
+            '/',
+            { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+            { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ] },
+            { name: 'links' },
+            { name: 'insert' },
+            '/',
+            { name: 'styles' },
+            { name: 'colors' },
+            { name: 'tools' },
+            { name: 'others' },
+            { name: 'about' }
+        ]
+    } );
+</script>
+<script src="/js/newPost.js"></script>
+{{/if}}
+{{#if isViewPostTemplate}}
+
 {{/if}}
 <!-- AOS -->
 <script src="/js/aos.js"></script>

@@ -16,6 +16,13 @@ h2 {
     width: fit-content; /* just wrap the content */
     margin: auto; /* center the element */
 }
+.dashPc{
+    background-color: #f0f0f0; /* light grey background */
+    padding: 20px; /* space around text */
+    border-radius: 10px; /* rounded corners */
+    width: fit-content; /* just wrap the content */
+    margin: auto; /* center the element */
+}
 
 @keyframes ColorChange {
     0% {-webkit-text-fill-color: #747474;}
@@ -105,7 +112,7 @@ img {
 
 a, button {
     cursor: pointer;
-    border: 2px solid lightgray !important;
+    border: 2px solid lightgray;
     border-radius: 10px !important;
     padding: 10px 20px !important;
     transition: 0.3s !important;
@@ -179,7 +186,7 @@ a:hover, button:hover {
     max-width: 80px;
 }
 
-/********** feature (skew background) **********/
+/********** new Post **********/
 .feature img {
     width: 100%;
     max-width: 480px;
@@ -214,6 +221,7 @@ a:hover, button:hover {
     color: #ffffff;
 }
 
+  
 
 @media (min-width: 576px) {
     h1 {
