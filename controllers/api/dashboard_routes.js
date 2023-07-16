@@ -11,6 +11,7 @@ require('dotenv').config();
 async function checkAuth(req, res, next) {
     let cookieUserId = req.session.user_id; // this is the users id that is saved in the session
     console.log("req.session: ", req.session)
+    console.log("req.cookies.session_token: ", req.cookies.session_token)
     // Check if cookieUserId is defined
     if (!cookieUserId) {
         res.redirect('/signup')
@@ -27,9 +28,6 @@ async function checkAuth(req, res, next) {
 
         const rightNow = new Date();
         const sessionExpiration = new Date(userSession.expires_at);
-        console.log("userSession.expires_at", userSession.expires_at)
-        console.log("rightNow ", rightNow )
-        console.log('rightNow < sessionExpiration',rightNow < sessionExpiration )
         if (rightNow < sessionExpiration) {
             next(); // Session is valid, continue to the requested route
         } else {

@@ -12,6 +12,7 @@ const session = require('express-session');                             // used 
 const path = require('path');                                           // Import the path module
 const helpers = require('./utils/helpers');                             // Import the helper functions
 const Session = require('./models/sessions');
+var cookieParser = require('cookie-parser')
 const hbs = exphbs.create({                                             // Create an instance of Express Handlebars with helpers and default layout
     helpers: helpers,
     defaultLayout: 'main' 
@@ -21,6 +22,7 @@ const hbs = exphbs.create({                                             // Creat
 app.engine('handlebars', hbs.engine);                            // Set the handlebars engine for rendering views
 app.set('view engine', 'handlebars');
 
+app.use(cookieParser())
 app.use(express.json());                                         // Parse JSON bodies sent in requests
 // sets up your cookies
 app.use(session({

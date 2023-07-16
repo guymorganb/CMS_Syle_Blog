@@ -1,11 +1,9 @@
 /**
- * The heartbeat pings the server at set intervals checking users active status
+ * The heartbeat pings the server each time the user visits the dashboard to make a new post or view a post and updates the session
  */
-
-
-
+document.addEventListener('DOMContentLoaded', async ()=>{
 // Start the heartbeat system after the user logs in
-const heartbeatInterval = setInterval(async () => {
+  const heartbeatInterval = setInterval(async () => {
   const session_token = document.cookie
  .split('; ')
  .find(row => row.startsWith('session_token'))
@@ -26,12 +24,12 @@ const heartbeatInterval = setInterval(async () => {
   console.log("heartbeat interval ran")
   .catch(error => console.error('Error in clientside heartbeat:', error));
 }, 10 * 1000); 
+clearInterval(heartbeatInterval);
+})
+
 
 // Every 5 minutes 5 * 60 * 1000
 // clear the interval when the user logs out
-const stopHearBeat = () =>{
-  clearInterval(heartbeatInterval);
-}
 
 
-module.exports = heartbeatInterval;
+
