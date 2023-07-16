@@ -7,8 +7,8 @@ const Session = require('../../models/sessions')
 
 
 
-router.post('/heartbeat', (req, res) => {
-  console.log('inside heartbeat:req.body ', req.body)
+router.post('/ping', (req, res) => {
+  console.log('inside ping:req.body ', req.body)
   return
   const sessionToken = req.cookies.session_token;
 

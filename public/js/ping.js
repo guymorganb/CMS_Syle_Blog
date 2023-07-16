@@ -3,18 +3,18 @@
  */
 document.addEventListener('DOMContentLoaded', async ()=>{
 // Start the heartbeat system after the user logs in
-  const heartbeatInterval = setInterval(async () => {
   const session_token = document.cookie
+  console.log("Your inside the ping")
  .split('; ')
  .find(row => row.startsWith('session_token'))
  .split('=')[1];
  if (!session_token) {
   console.error('Session token not found in cookies');
   // handle error here, maybe redirect the user to login page
-  window.location.href = '/login'
+  window.location.href = '/'
   return;
 }
-  await fetch('/heartbeat', {
+  await fetch('/ping', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', async ()=>{
   })
   console.log("heartbeat interval ran")
   .catch(error => console.error('Error in clientside heartbeat:', error));
-}, 10 * 1000); 
+
 clearInterval(heartbeatInterval);
 })
 
