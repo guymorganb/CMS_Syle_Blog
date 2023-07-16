@@ -8,17 +8,17 @@ const { Model, DataTypes, Op } = require('sequelize');
 
 class Session extends Model{
 
-  static async updateHeartbeat(sessionToken) {
+  static async updatePing(sessionToken) {
     try{
       const session = await this.findOne({where:{session_token: sessionToken}})
         if (session) {
           session.changed('updated_at', true);
           session.minutes_active += 5;
           await session.save();
-          console.log('HeartBeat')
+          console.log('Ping was executed on the session!')
       }
     }catch (err) {
-      console.error('Error in session model updateHeartbeat: ', err);
+      console.error('Error in session model ping: ', err);
     }
   }
   static async clearExpiredSessions(cutoff) {

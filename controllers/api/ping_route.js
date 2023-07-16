@@ -6,21 +6,29 @@ const Session = require('../../models/sessions')
 
 
 
-
-router.post('/ping', (req, res) => {
+// '/ping' endpoint
+router.post('/', (req, res) => {
   console.log('inside ping:req.body ', req.body)
-  return
-  const sessionToken = req.cookies.session_token;
+  try{
+    const sessionToken = req.cookies.session_token;
+    if(!sessionToken){
+      res.status(400)
+      return;
+    }
+    console.log('inside ping route: ', req.cookies.session_token)
+    console.log('inside ping route:req.body ', req.body)
+    // ping route to update the session model 'updated_at'
+    Session.updatePing(sessionToken)
+      .then(() => res.sendStatus(200))
+      .catch(error => {
+        console.error('Error:', error);
+        res.status(500).json({message: 'Server Error', Error: err})
+      });
+    
+  }catch(err){
+    res.status(500).json({message: 'Server Error', Error: err})
+  }
 
-  console.log('inside heartbeat: ', req.cookies.session_token)
-  console.log('inside heartbeat:req.body ', req.body)
-  // heartbeat route to update the session model 'updated_at'
-  Session.updateHeartbeat(sessionToken)
-    .then(() => res.sendStatus(200))
-    .catch(error => {
-      console.error('Error:', error);
-      res.sendStatus(500);
-    });
   });
 
 

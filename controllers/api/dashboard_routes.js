@@ -10,7 +10,6 @@ require('dotenv').config();
 // Middleware to check if user is authenticated
 async function checkAuth(req, res, next) {
     let cookieUserId = req.session.user_id; // this is the users id that is saved in the session
-    console.log("req.session: ", req.session)
     console.log("req.cookies.session_token: ", req.cookies.session_token)
     // Check if cookieUserId is defined
     if (!cookieUserId) {
