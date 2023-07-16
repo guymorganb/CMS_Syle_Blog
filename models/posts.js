@@ -9,8 +9,8 @@ const { Model, DataTypes } = require('sequelize');
 class Post extends Model{}
 Post.init({
     id: {
-      autoIncrement: true,
-      type: DataTypes.INTEGER,
+      autoIncrement: false,
+      type: DataTypes.STRING(255),
       allowNull: false,
       primaryKey: true
     },

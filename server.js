@@ -10,11 +10,13 @@ const PORT = process.env.PORT || 3001;                                  // Defin
 const exphbs = require('express-handlebars');                           // Import the Express Handlebars module
 const session = require('express-session');                             // used for session cookies
 const path = require('path');                                           // Import the path module
-const helpers = require('./utils/helpers.js');                          // Import the helper functions
+const helpers = require('./utils/helpers');                             // Import the helper functions
+const Session = require('./models/sessions');
 const hbs = exphbs.create({                                             // Create an instance of Express Handlebars with helpers and default layout
     helpers: helpers,
     defaultLayout: 'main' 
-});                           
+});        
+               
 
 app.engine('handlebars', hbs.engine);                            // Set the handlebars engine for rendering views
 app.set('view engine', 'handlebars');
@@ -22,7 +24,7 @@ app.set('view engine', 'handlebars');
 app.use(express.json());                                         // Parse JSON bodies sent in requests
 // sets up your cookies
 app.use(session({
-    secret: process.env.SECRET,
+    secret: process.env.SECRET,                                 // the secret helps with hashing the session cookie I think?
     resave: false,                                              // set resave to false to prevent potentially problematic race conditions.
     saveUninitialized: false,
     cookie: { 
@@ -32,13 +34,23 @@ app.use(session({
         sameSite: false,
         proxy: false                                            //Trust the reverse proxy when setting secure cookies (via the "X-Forwarded-Proto" header).
     }
-  }));
+}));
+
 app.use(express.urlencoded({ extended: true }));                // Parse URL-encoded bodies sent in requests
 app.use(express.static(path.join(__dirname, 'public')));        // Serve static files from the 'public' directory
 app.use(routes); // Use the defined routes
 
 sequelize.sync({ force: false }).then(() => {                   // Sync the Sequelize models with the database (force: false to preserve data)
     app.listen(PORT, () => console.log('Server Listening!'));   // Start the server and listen on the specified port
+    
+    setInterval(async () => {                                   // Set up interval to remove expired sessions every hour
+        await Session.removeExpiredSessions();
+      }, 60 * 60 * 1000);
+      
+      setInterval(() => {
+        const cutoff = new Date(Date.now() - (5 * 60 * 1000 + 1 * 60 * 1000)); // 5 minutes ago, plus 1 minute grace period
+        Session.clearExpiredSessions(cutoff);   // if updated_at is less than rightNow - 5 minutes, delete the session.
+      }, 5 * 60 * 1000); // Every 5 minutes
 });
 
 

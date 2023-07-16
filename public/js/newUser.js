@@ -7,6 +7,7 @@ const Password = document.getElementById('Password');
 const Verify_Password = document.getElementById('Verify_Password');
 const submitbtn = document.getElementById('Sign-in');
 const resetBtn = document.getElementById('clear');
+const heartbeatInterval = require('./heartBeat.js')
 let msgs = [];
 const displayErrorMsgs = function(msgs) {
     const ul = document.createElement('ul'); //create an element to hold our errors
@@ -61,11 +62,14 @@ let validate = async function() {
             });
                 // If login is successful, redirect to dashboard
                 if (response.ok) {
+                    // set the session token in the browser
                     const data = await response.json();
-                    msgs[msgs.length] = data.message
+                    document.cookie = `session_token=${data.newSession.session_token}; path=/`; // set the cookie
+                    console.log("document.cookie: ",  document.cookie)
+                    msgs[msgs.length] = data.message;
                     displayErrorMsgs(msgs)
                     // now load a new box which will allow the user to input their username, sends a GET request
-                    setTimeout(() => {window.location.href = '/dashboard'}, 500);
+                    setTimeout(() => {window.location.href = '/dashboard'; heartbeatInterval()}, 5500);
                 } else {
                     // Display error message from server
                     // you have to use await or it wont work
@@ -96,3 +100,5 @@ const init = () =>{
       });
 }
 init();
+
+// document.cookie:  session_token=b1d11468-7ac6-4bbc-9598-758ae20dcfb1

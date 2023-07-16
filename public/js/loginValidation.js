@@ -5,6 +5,7 @@ const loginForm = document.getElementById("login_form");
 const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
 const resetButton = document.getElementById("reset");
+const heartbeatInterval = require('./heartBeat.js')
 let msgs = [];
 const displayErrorMsgs = function (msgs) {
     const ul = document.createElement("ul"); // creates a ul
@@ -55,9 +56,12 @@ let validate = async function ()  {
             });
                 // If login is successful, redirect to dashboard
                 if (response.ok) {
-                    msgs[msgs.length] = 'Success!'
+                    // set the session token in the browser
+                    const data = await response.json();
+                    document.cookie = `session_token=${data.newSession.session_token}; path=/`
+                    msgs[msgs.length] = "Login Success!";
                     displayErrorMsgs(msgs)
-                    setTimeout(function () {window.location.href = '/dashboard'}, 500);
+                    setTimeout(function () {window.location.href = '/dashboard'; heartbeatInterval()}, 500);
                     return;
                 } else {
                     // Display error message from server
