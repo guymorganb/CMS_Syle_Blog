@@ -48,12 +48,12 @@ sequelize.sync({ force: false }).then(() => {                   // Sync the Sequ
       }, 60 * 60 * 1000);
       
       setInterval(() => {
-        const cutoff = new Date(Date.now() - (5 * 60 * 1000 + 1 * 60 * 1000)); // 5 minutes ago, plus 1 minute grace period
+        const cutoff = new Date(Date.now() - (10 * 1000)); // 5 minutes ago, plus 1 minute grace period
         Session.clearExpiredSessions(cutoff);   // if updated_at is less than rightNow - 5 minutes, delete the session.
-      }, 5 * 60 * 1000); // Every 5 minutes
+      }, 10 * 1000); // Every 5 minutes
 });
 
-
+//  5 * 60 * 1000 + 1 * 60 * 1000
 
 /**
  * Here's a basic example of generating a JWT in Node.js using the jsonwebtoken package.

@@ -63,7 +63,7 @@ router.post('/', async (req,res)=>{
         await userSession.save();
     }
     // send back the newSession info to user
-     res.status(200).json({ newSession });
+     res.status(201).json({ newSession });
     }catch(err){
         console.error({message: "Error in post route: ", Error: err})
     }

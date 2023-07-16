@@ -23,7 +23,8 @@ const heartbeatInterval = setInterval(async () => {
     },
     body: JSON.stringify({ sessionToken: session_token }) // Assuming you have the user's ID stored somewhere
   })
-  .catch(error => console.error('Error:', error));
+  console.log("heartbeat interval ran")
+  .catch(error => console.error('Error in clientside heartbeat:', error));
 }, 10 * 1000); 
 
 // Every 5 minutes 5 * 60 * 1000

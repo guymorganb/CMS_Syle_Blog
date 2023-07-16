@@ -5,7 +5,6 @@ const loginForm = document.getElementById("login_form");
 const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
 const resetButton = document.getElementById("reset");
-const heartbeatInterval = require('./heartBeat.js')
 let msgs = [];
 const displayErrorMsgs = function (msgs) {
     const ul = document.createElement("ul"); // creates a ul
@@ -47,7 +46,7 @@ let validate = async function ()  {
     msgs[msgs.length] = "Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, one digit, and one special character.";
     }
     if (msgs.length == 0) {
-      // Fetch API for making AJAX requests, returns a Promise
+      // Fetch API returns a Promise
         try{
             const response = await fetch('/login', {
                 method: 'POST',
@@ -61,7 +60,8 @@ let validate = async function ()  {
                     document.cookie = `session_token=${data.newSession.session_token}; path=/`
                     msgs[msgs.length] = "Login Success!";
                     displayErrorMsgs(msgs)
-                    setTimeout(function () {window.location.href = '/dashboard'; heartbeatInterval()}, 500);
+                    setTimeout(() => {window.location.href = '/dashboard';}, 500);
+                    //heartbeatInterval()
                     return;
                 } else {
                     // Display error message from server
