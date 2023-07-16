@@ -23,8 +23,6 @@ document.addEventListener('DOMContentLoaded', async ()=>{
   })
   console.log("heartbeat interval ran")
   .catch(error => console.error('Error in clientside heartbeat:', error));
-
-clearInterval(heartbeatInterval);
 })
 
 
