@@ -7,7 +7,6 @@ const Password = document.getElementById('Password');
 const Verify_Password = document.getElementById('Verify_Password');
 const submitbtn = document.getElementById('Sign-in');
 const resetBtn = document.getElementById('clear');
-const heartbeatInterval = require('./heartBeat.js')
 let msgs = [];
 const displayErrorMsgs = function(msgs) {
     const ul = document.createElement('ul'); //create an element to hold our errors
@@ -53,7 +52,7 @@ let validate = async function() {
         msgs[msgs.length] = "Passwords do not match.";
     }
     if (msgs.length == 0) {
-    // Fetch API for making AJAX requests, returns a Promise
+    // Fetch API, returns a Promise
         try{
             const response = await fetch('/signup/newuser/credentials', {
                 method: 'POST',
@@ -65,11 +64,11 @@ let validate = async function() {
                     // set the session token in the browser
                     const data = await response.json();
                     document.cookie = `session_token=${data.newSession.session_token}; path=/`; // set the cookie
-                    console.log("document.cookie: ",  document.cookie)
-                    msgs[msgs.length] = data.message;
+                    msgs[msgs.length] = 'Profile Created!';
                     displayErrorMsgs(msgs)
                     // now load a new box which will allow the user to input their username, sends a GET request
-                    setTimeout(() => {window.location.href = '/dashboard'; heartbeatInterval()}, 5500);
+                    setTimeout(() => {window.location.href = '/dashboard';}, 500);
+                    return;
                 } else {
                     // Display error message from server
                     // you have to use await or it wont work

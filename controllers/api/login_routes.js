@@ -42,7 +42,8 @@ router.post('/', async (req,res)=>{
 
       // Create a new session for the user that will expire in 1 hour
       let expiresAt = new Date();
-      expiresAt.setHours(expiresAt.getHours() + 1);  
+     // Set the initial expiration time of the session for 30 minutes
+      expiresAt.setMinutes(expiresAt.getMinutes() + 30); 
       const sessionToken = uuid.v4();
       const newSession = await Session.create({
           user_id: userData.id,
@@ -63,7 +64,7 @@ router.post('/', async (req,res)=>{
         await userSession.save();
     }
     // send back the newSession info to user
-     res.status(200).json({ newSession });
+     res.status(201).json({ newSession });
     }catch(err){
         console.error({message: "Error in post route: ", Error: err})
     }

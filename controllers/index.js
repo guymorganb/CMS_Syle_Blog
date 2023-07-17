@@ -8,8 +8,8 @@ const contact = require('./api/contact_routes');
 const login = require('./api/login_routes')
 const signUp= require('./api/signUp_routes')
 const home = require('./api/home_routes')
-const signout = require('./api/signout_routes')
-const heartbeat = require('./api/heartbeat')
+const logout = require('./api/logout_routes')
+const ping = require('./api/ping_route')
 // gets all user comments and posts
 router.use('/', home);
 // for loging in directly
@@ -19,11 +19,11 @@ router.use('/dashboard', dashboard)
 // for signing up
 router.use('/signup', signUp)
 // for signing out
-router.use('/signout', signout)
+router.use('/logout', logout)
 //for contact page
 router.use('/contact', contact)
-// for heartbeat ping
-router.use('/heartbeat', heartbeat)
+// for ping
+router.use('/ping', ping)
 
 
 router.use((req,res) =>{

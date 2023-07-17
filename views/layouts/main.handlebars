@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Bootstrap Template Atlas</title>
+    <title>Atlas</title>
     <link rel="icon" href="/img/favicon.png" sizes="32x32" type="image/png">
     <!-- custom.css -->
     <link rel="stylesheet" href="/css/custom.css">
@@ -20,6 +20,7 @@
     {{/if}}
     {{#if isContactTemplate}}
     <link rel="stylesheet" href="/css/contact.css">
+    
     {{/if}}
     <!-- bootstrap.min.css -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -33,8 +34,14 @@
     <link rel="stylesheet" href="/css/aos.css">
 </head>
 <body>
+{{#if isDashboardTemplate}}
+<script src="/js/ping.js" defer ></script>
+{{/if}}
 {{{body}}}
 </body>
+{{#if isConfirmLogOut}}
+<script src="/js/logout.js" defer ></script>
+{{/if}}
 {{#if isLoginTemplate}}
 <script src="/js/loginValidation.js"></script>
 {{/if}}
@@ -45,6 +52,7 @@
 <script src="/js/newUser.js"></script>
 {{/if}}
 {{#if isNewPostTemplate}}
+<script src="/js/ping.js" defer ></script>
 <script src="/ckeditor/ckeditor.js"></script>
 <script>
     CKEDITOR.replace( 'postContent', {

@@ -9,17 +9,14 @@ require('dotenv').config();
 //its probably best to use a dedicated middleware for authorization like passport.js
 // Middleware to check if user is authenticated
 async function checkAuth(req, res, next) {
-    let cookieUserId = req.session.user_id; // this is the users id that is saved in the session
-    console.log("req.session: ", req.session)
-    // Check if cookieUserId is defined
-    if (!cookieUserId) {
+    let sessionToken = req.cookies.session_token; // this is the users id that is saved in the session
+   
+    if (!sessionToken) {
         res.redirect('/signup')
         return
     }
-
     // Search for the users session in the database by their cookieUserId saved by express-sessions
-    const userSession = await Session.findOne({ where: { user_id: cookieUserId } }); 
-
+    const userSession = await Session.findOne({ where: { session_token: sessionToken } }); 
     try {
         if (!userSession) {
             throw new Error('Session not found'); // throws an error if no session found
@@ -27,9 +24,6 @@ async function checkAuth(req, res, next) {
 
         const rightNow = new Date();
         const sessionExpiration = new Date(userSession.expires_at);
-        console.log("userSession.expires_at", userSession.expires_at)
-        console.log("rightNow ", rightNow )
-        console.log('rightNow < sessionExpiration',rightNow < sessionExpiration )
         if (rightNow < sessionExpiration) {
             next(); // Session is valid, continue to the requested route
         } else {
@@ -83,7 +77,7 @@ async function fetchPostData(userId) {
         // This fetches a single user, not all users
         Post.findAll({where:{user_id: userId}}), 
         Comment.findAll({where:{user_id: userId}}), 
-        User.findOne({where:{user_id: userId}}),
+        User.findOne({where:{id: userId}}),
     ])
     // comment is not defined fix this
         .then(([posts, comments, users]) => {
@@ -125,7 +119,6 @@ async function fetchPostData(userId) {
             throw err; // or handle the error in some other way
         });
 }
-//---------you gotta blend this function so it works
 // function to randomize the background image but still call the database
 // '/dashboard/viewpost' endpoint
 router.get('/viewposts', checkAuth, async (req, res) => {

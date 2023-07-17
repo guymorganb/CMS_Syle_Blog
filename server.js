@@ -12,6 +12,7 @@ const session = require('express-session');                             // used 
 const path = require('path');                                           // Import the path module
 const helpers = require('./utils/helpers');                             // Import the helper functions
 const Session = require('./models/sessions');
+var cookieParser = require('cookie-parser')
 const hbs = exphbs.create({                                             // Create an instance of Express Handlebars with helpers and default layout
     helpers: helpers,
     defaultLayout: 'main' 
@@ -21,6 +22,7 @@ const hbs = exphbs.create({                                             // Creat
 app.engine('handlebars', hbs.engine);                            // Set the handlebars engine for rendering views
 app.set('view engine', 'handlebars');
 
+app.use(cookieParser())
 app.use(express.json());                                         // Parse JSON bodies sent in requests
 // sets up your cookies
 app.use(session({
@@ -40,19 +42,34 @@ app.use(express.urlencoded({ extended: true }));                // Parse URL-enc
 app.use(express.static(path.join(__dirname, 'public')));        // Serve static files from the 'public' directory
 app.use(routes); // Use the defined routes
 
-sequelize.sync({ force: false }).then(() => {                   // Sync the Sequelize models with the database (force: false to preserve data)
-    app.listen(PORT, () => console.log('Server Listening!'));   // Start the server and listen on the specified port
+sequelize.sync({ force: false }).then(() => {
+    // Start the server and listen on the specified port
+    app.listen(PORT, () => console.log('Server Listening!'));   
+  
+    // Set up interval to find expired sessions and clean them up every hour
+    setInterval(async () => {                                   
+      try {
+        await Session.findExpiredSessions();
+      } catch (err) {
+        console.error('Error in finding expired sessions: ', err);
+      }
+    }, 60 * 60 * 1000); // Every hour
+  
     
-    setInterval(async () => {                                   // Set up interval to remove expired sessions every hour
-        await Session.removeExpiredSessions();
-      }, 60 * 60 * 1000);
-      
-      setInterval(() => {
-        const cutoff = new Date(Date.now() - (5 * 60 * 1000 + 1 * 60 * 1000)); // 5 minutes ago, plus 1 minute grace period
-        Session.clearExpiredSessions(cutoff);   // if updated_at is less than rightNow - 5 minutes, delete the session.
-      }, 5 * 60 * 1000); // Every 5 minutes
-});
-
+    
+    setInterval(async () => {
+      try {
+        let tokenArray = await Session.getAllSessionTokens();       // Every 5 minutes, this will run and delete any sessions that are 30 minutes old
+        for(let token of tokenArray){                               // it will also calculate the users time every 5 minutes
+            await Session.calcMinutes(token);
+        }
+        const cutoff = new Date(Date.now() - (5 * 60 * 1000));     // 5 minutes ago,
+        await Session.clearExpiredSessions(cutoff);                 // if updated_at is less than (rightNow - 5 minutes), delete the session.
+      } catch (err) {
+        console.error('Error in handling sessions: ', err);
+      }
+    }, 5 * 60 * 1000);                                              // Every 5 minutes
+  });
 
 
 /**
