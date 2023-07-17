@@ -59,7 +59,7 @@ router.get('/', async (req, res) => {
 
         const postDataList = await fetchPostData();
         const userAuth = userSession ? true : false;
-        res.status(200).render('homepage', { userCreds: userAuth, postDataList, imageUrl });
+        res.status(200).render('homepage', { isAuth: userAuth, postDataList, imageUrl });
     } 
     catch (error) {
         console.error(error);
@@ -77,7 +77,7 @@ router.get('/', async (req, res) => {
         try {
             const postDataList = await fetchPostData();
             const userAuth = userSession ? true : false;
-            res.status(200).render('homepage', { userCreds: userAuth, postDataList, imageUrl });
+            res.status(200).render('homepage', { isAuth: userAuth, postDataList, imageUrl });
         } 
         catch (postDataError) {
             console.error(postDataError);

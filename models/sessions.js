@@ -41,7 +41,7 @@ class Session extends Model{
           session.active = boolean;
           await session.save();
           if(session.active == false){
-            this.calcMinutes(sessionToken)
+            await this.calcMinutes(sessionToken)
           }else{
             session.updated_at = now;
             session.changed('updated_at', true);
@@ -104,9 +104,20 @@ class Session extends Model{
       console.error("Error in finding expired sessions: ", err);
     }
   }
+  static async kill(sessionToken){
+    try{
+      await this.destroy({ 
+        where: { 
+          session_token: sessionToken
+        } 
+      });
+    }catch (err) {
+      console.error('Error in session model kill: ', err);
+    }
+  }
   static async clearExpiredSessions(cutoff) {
     try{
-      this.destroy({ 
+      await this.destroy({ 
         where: { 
           updated_at: { 
             [Op.lt]: cutoff // [Op.lt] stands for "less than" (the < operator in SQL). This condition translates to: "where expires_at is less than now"

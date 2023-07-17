@@ -42,25 +42,34 @@ app.use(express.urlencoded({ extended: true }));                // Parse URL-enc
 app.use(express.static(path.join(__dirname, 'public')));        // Serve static files from the 'public' directory
 app.use(routes); // Use the defined routes
 
-sequelize.sync({ force: false }).then(() => {                   // Sync the Sequelize models with the database (force: false to preserve data)
-    app.listen(PORT, () => console.log('Server Listening!'));   // Start the server and listen on the specified port
-    // everything in here will run while the server is running
-    setInterval(async () => {                                   // Set up interval to find expired sessions and clean them up every hour
+sequelize.sync({ force: false }).then(() => {
+    // Start the server and listen on the specified port
+    app.listen(PORT, () => console.log('Server Listening!'));   
+  
+    // Set up interval to find expired sessions and clean them up every hour
+    setInterval(async () => {                                   
+      try {
         await Session.findExpiredSessions();
-      }, 60 * 60 * 1000);
-      
-      // every 5 minutes, this will run and delete any sessions that are 30 minutes old
-      // it will also calculate the users time every 5 minutes
-      setInterval(async () => {
+      } catch (err) {
+        console.error('Error in finding expired sessions: ', err);
+      }
+    }, 60 * 60 * 1000); // Every hour
+  
+    // Every 5 minutes, this will run and delete any sessions that are 30 minutes old
+    // it will also calculate the users time every 5 minutes
+    setInterval(async () => {
+      try {
         let tokenArray = await Session.getAllSessionTokens();
         for(let token of tokenArray){
             await Session.calcMinutes(token);
         }
-        const cutoff = new Date(Date.now() - (30 * 60 * 1000)); // 30 minutes ago, 
-        await Session.clearExpiredSessions(cutoff);   // if updated_at is less than rightNow - 30 minutes, delete the session.
-      }, 5 * 60 * 1000); // Every 5 minutes
-});
-
+        const cutoff = new Date(Date.now() - (30 * 60 * 1000)); // 30 minutes ago,
+        await Session.clearExpiredSessions(cutoff); // if updated_at is less than rightNow - 30 minutes, delete the session.
+      } catch (err) {
+        console.error('Error in handling sessions: ', err);
+      }
+    }, 5 * 60 * 1000); // Every 5 minutes
+  });
 
 
 /**

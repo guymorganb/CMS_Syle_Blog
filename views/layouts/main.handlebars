@@ -39,6 +39,9 @@
 {{/if}}
 {{{body}}}
 </body>
+{{#if isConfirmSignOut}}
+<script src="/js/logout.js" defer ></script>
+{{/if}}
 {{#if isLoginTemplate}}
 <script src="/js/loginValidation.js"></script>
 {{/if}}
