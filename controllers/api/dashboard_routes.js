@@ -199,7 +199,7 @@ router.get('/viewposts', checkAuth, async (req, res) => {
 router.post('/viewposts/createnew', checkAuth, async (req, res) => {
     const {title, body} = req.body;
     let cookieUserId = req.session.user_id;
-
+    console.log("req.session.user_id: ",  req.session.user_id)
     if(!cookieUserId){
         console.error({error: "No user id found in session"})
         res.status(401).redirect('/viewposts');

@@ -22,7 +22,7 @@ const init = () =>{
         })
         
       if(response.ok){
-        console.log("ping is ok")
+        console.log("ping status ok")
         return
       }
     }catch(err){

@@ -14,7 +14,7 @@ class Session extends Model{
       if (session) {
         const now = new Date();
         const expiryTime = new Date(now.getTime() + 30 * 60 * 1000); // Add 30 minutes to current time
-        console.log('Ping, Ping, Ping')
+        console.log('Pinged the session')
         // Update the session's updated_at and expires_at timestamps
         session.updated_at = now;
         session.expires_at = expiryTime;

@@ -72,7 +72,8 @@ async function checkSession(req, res, next){
   
       // The session token is valid. Proceed with the request.
       next();
-      console.log("Session is valid, browser and Database match")
+      console.log("Session is valid, browser and Database match: ", req.cookies.session_token)
+      console.log("req.session.user_id: ", req.session.user_id)
     } catch (err) {
       console.error('Error validating session token: ', err);
       next(err);
@@ -83,7 +84,6 @@ async function checkSession(req, res, next){
 // function to randomize the background image but still call the database
 router.get('/',checkSession, (req, res) => {
     let imageUrl;
-    setTimeout(() => {console.log('...........', req.cookies.session_token)}, 500);
     fetch('https://source.unsplash.com/random')
         .then(response => {
             imageUrl = response.url;
