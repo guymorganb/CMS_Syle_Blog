@@ -1,5 +1,5 @@
 /**
- * The heartbeat pings the server each time the user visits the dashboard to make a new post or view a post and updates the session
+ * pings the server each time the user visits the dashboard to make a new post or view a post and updates the session
  */
 const init = () =>{
   document.addEventListener('DOMContentLoaded', async ()=>{

@@ -20,7 +20,7 @@
     {{/if}}
     {{#if isContactTemplate}}
     <link rel="stylesheet" href="/css/contact.css">
-    <script src="/js/ping.js" defer ></script>
+    
     {{/if}}
     <!-- bootstrap.min.css -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -34,6 +34,9 @@
     <link rel="stylesheet" href="/css/aos.css">
 </head>
 <body>
+{{#if isDashboardTemplate}}
+<script src="/js/ping.js" defer ></script>
+{{/if}}
 {{{body}}}
 </body>
 {{#if isLoginTemplate}}
