@@ -3,6 +3,7 @@ const Session = require('../../models/sessions');
 const User = require('../../models/users') 
 const Post = require('../../models/posts')
 const Comment = require('../../models/comments')
+const getUserPostData = require('../../public/js/SingleUserPosts')
 const fetch = require('node-fetch');
 const { v5: uuidv5 } = require('uuid');
 const chalk = require('chalk');
@@ -29,7 +30,9 @@ async function checkAuth(req, res, next) {
             req.session.user_id = userSession.user_id
             req.session.active = true;
             await req.session.save(),
+
             next(); // Session is valid, continue to the requested route
+
             console.log(chalk.blue("Session is valid, browser and Database match: "), chalk.green(req.cookies.session_token), "|", chalk.blue("Session user_id: "), chalk.green(req.session.user_id));
         } else {
             // Session is not valid, redirect the user to the signup page
@@ -56,8 +59,6 @@ router.get('/',checkAuth ,(req, res) => {
 // '/dashboard/newpost' endpoint
 router.get('/newpost', (req, res) => {
     let imageUrl;
- // check if the user session token is already valid
-    // if not valid then give them the login screen
     fetch('https://source.unsplash.com/random')
         .then(response => {
             imageUrl = response.url;
@@ -76,104 +77,29 @@ router.get('/newpost', (req, res) => {
         });
 });
 
-// Utility function to fetch posts, comments, and users
-async function fetchAllPostData(userId) {
-    return Promise.all([
-        // This fetches a single user, not all users
-        Post.findAll({where:{user_id: userId}}), 
-        Comment.findAll({where:{user_id: userId}}), 
-        User.findOne({where:{id: userId}}),
-    ])
-    // comment is not defined fix this
-        .then(([posts, comments, users]) => {
-            comments = comments.map(comment => comment.dataValues);
-            posts = posts.map(post => post.dataValues)
-            users = users.map(user => user.dataValues)
+router.get('/viewpost/comment', async (req, res) => {
+    let cookieUserId = req.session.user_id;
+    let imageUrl
 
-            let postDataList = [];
+    if(!cookieUserId){
+        return res.status(401).json({ error: "No user id found in session"})
+    }
 
-            for (let i = 0; i < posts.length; i++) {
-                let postUser = users.find(user => user.id === posts[i].user_id);
-                let postComments = comments.filter(comment => comment.post_id === posts[i].id);
-
-                let commentsData = postComments.map(comment => {
-                    let commentUser = users.find(user => user.id === comment.user_id);
-
-                    return {
-                        content: comment.content,
-                        created: new Date(comment.createdAt).toLocaleString(),
-                        username: commentUser ? commentUser.username : null
-                    };
-                });
-
-                let postData = {
-                    userPost: {
-                        title: posts[i].title,
-                        content: posts[i].body,
-                        created: new Date(posts[i].createdAt).toLocaleString(),
-                        username: postUser ? postUser.username : null
-                    },
-                    comments: commentsData
-                };
-                postDataList.push(postData);
-            }
-            return postDataList;
-        })
-        .catch((err) => {
-            console.error("Error fetching post data: ", err);
-            throw err; // or handle the error in some other way
-        });
-}
-async function getUserPostData(userId) {
-    return Promise.all([
-        Post.findAll({where:{user_id: userId}}), 
-        Comment.findAll({where:{user_id: userId}}), 
-        User.findOne({where:{id: userId}})
-    ])
-        .then(([posts, comments, user]) => {
-            // If there are no posts and comments, return a custom message
-            if (posts.length === 0 && comments.length === 0) {
-                return 'No posts or comments found for this user';
-            }
-
-            comments = comments.map(comment => comment.dataValues);
-            posts = posts.map(post => post.dataValues);
-            user = user.dataValues;
-
-            let postDataList = [];
-
-            for (let i = 0; i < posts.length; i++) {
-                let postUser = user;
-                let postComments = comments.filter(comment => comment.post_id === posts[i].id);
-
-                let commentsData = postComments.map(comment => {
-                    let commentUser = user;
-
-                    return {
-                        content: comment.content,
-                        created: new Date(comment.createdAt).toLocaleString(),
-                        username: commentUser ? commentUser.username : null
-                    };
-                });
-
-                let postData = {
-                    userPost: {
-                        title: posts[i].title,
-                        content: posts[i].body,
-                        created: new Date(posts[i].createdAt).toLocaleString(),
-                        username: postUser ? postUser.username : null
-                    },
-                    comments: commentsData
-                };
-                postDataList.push(postData);
-            }
-            return postDataList;
-        })
-        .catch((err) => {
-            console.error("Error fetching post data: ", err);
-            throw err;
-        });
-}
+    try{
+        let response = await fetch('https://source.unsplash.com/random');
+        imageUrl = response.url;
+    }catch(err){
+        console.error(err);
+        imageUrl = "/img/tech4.png";
+    }
+    try {
+        let postDataList = await fetchAllPostData(cookieUserId);
+        res.status(200).render('dashboard', { isViewPostTemplate: true, imageUrl, postDataList });
+    } catch(error) {
+        console.error(error);
+        res.status(500).send('Server Error');
+    }
+});
 
 // function to randomize the background image but still call the database
 // '/dashboard/viewpost' endpoint
