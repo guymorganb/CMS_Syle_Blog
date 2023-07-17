@@ -12,10 +12,10 @@ class Session extends Model{
     try{
       const session = await this.findOne({where:{session_token: sessionToken}})
         if (session) {
+          // this should change the updated at status to a more current time
           session.changed('updated_at', true);
           session.minutes_active += 5;
           await session.save();
-          console.log('Ping was executed on the session!')
       }
     }catch (err) {
       console.error('Error in session model ping: ', err);
@@ -31,13 +31,12 @@ class Session extends Model{
           } 
         } 
       });
-      console.log("clearExpiredSessions: Expired sessions removed");
     }catch(err){
       console.error('Error in session model clearExpiredSessions: ', err);
     }
   }
-
-  static async removeExpiredSessions() {
+// this is an auxuilary function ill keep for 
+  static async removeAll() {
     try {
       const now = new Date();
       await this.destroy({

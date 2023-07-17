@@ -45,14 +45,14 @@ app.use(routes); // Use the defined routes
 sequelize.sync({ force: false }).then(() => {                   // Sync the Sequelize models with the database (force: false to preserve data)
     app.listen(PORT, () => console.log('Server Listening!'));   // Start the server and listen on the specified port
     
-    setInterval(async () => {                                   // Set up interval to remove expired sessions every hour
-        await Session.removeExpiredSessions();
-      }, 60 * 60 * 1000);
+    // setInterval(async () => {                                   // Set up interval to removeAll expired sessions every hour
+    //     await Session.removeAll();
+    //   }, 60 * 60 * 1000);
       
       setInterval(() => {
         const cutoff = new Date(Date.now() - (10 * 1000)); // 5 minutes ago, plus 1 minute grace period
         Session.clearExpiredSessions(cutoff);   // if updated_at is less than rightNow - 5 minutes, delete the session.
-      }, 10 * 1000); // Every 5 minutes
+      }, 20 * 1000); // Every 5 minutes
 });
 
 //  5 * 60 * 1000 + 1 * 60 * 1000

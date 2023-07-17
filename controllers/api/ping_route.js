@@ -4,8 +4,6 @@
 const router = require('express').Router();
 const Session = require('../../models/sessions')
 
-
-
 // '/ping' endpoint
 router.post('/', (req, res) => {
   console.log('inside ping:req.body ', req.body)
@@ -15,8 +13,6 @@ router.post('/', (req, res) => {
       res.status(400)
       return;
     }
-    console.log('inside ping route: ', req.cookies.session_token)
-    console.log('inside ping route:req.body ', req.body)
     // ping route to update the session model 'updated_at'
     Session.updatePing(sessionToken)
       .then(() => res.sendStatus(200))
@@ -30,7 +26,4 @@ router.post('/', (req, res) => {
   }
 
   });
-
-
-
 module.exports = router;
