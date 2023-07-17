@@ -45,17 +45,23 @@ app.use(routes); // Use the defined routes
 sequelize.sync({ force: false }).then(() => {                   // Sync the Sequelize models with the database (force: false to preserve data)
     app.listen(PORT, () => console.log('Server Listening!'));   // Start the server and listen on the specified port
     
-    setInterval(async () => {                                   // Set up interval to find expired sessions and log them out
+    setInterval(async () => {                                   // Set up interval to find expired sessions and clean them up every hour
         await Session.findExpiredSessions();
       }, 60 * 60 * 1000);
       
-      setInterval(() => {
-        const cutoff = new Date(Date.now() - (10 * 1000)); // 5 minutes ago, plus 1 minute grace period
-        Session.clearExpiredSessions(cutoff);   // if updated_at is less than rightNow - 5 minutes, delete the session.
-      }, 20 * 1000); // Every 5 minutes
+      // every 5 minutes, this will run and delete any sessions that are 30 minutes old
+      // it will also calculate the users time every 5 minutes
+      setInterval(async () => {
+        let tokenArray = await Session.getAllSessionTokens();
+        for(let token of tokenArray){
+            await Session.calcMinutes(token);
+        }
+        const cutoff = new Date(Date.now() - (30 * 60 * 1000)); // 30 minutes ago, 
+        await Session.clearExpiredSessions(cutoff);   // if updated_at is less than rightNow - 30 minutes, delete the session.
+      }, 5 * 60 * 1000); // Every 5 minutes
 });
 
-//  5 * 60 * 1000 + 1 * 60 * 1000
+
 
 /**
  * Here's a basic example of generating a JWT in Node.js using the jsonwebtoken package.

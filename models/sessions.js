@@ -9,16 +9,23 @@ const { Model, DataTypes, Op } = require('sequelize');
 class Session extends Model{
   // user activity triggers a ping and sends it to the session model altering the updated at time
   static async updatePing(sessionToken) {
-    try{
-      const session = await this.findOne({where:{session_token: sessionToken}})
-        if (session) {
-          const now = new Date();
-          // this should change the updated at status to a more current time 'changed' flag is used to make sure the timestamp is updated
-          session.updated_at = now;
-          session.changed('updated_at', true);
-          await session.save();
-        }
-    }catch (err) {
+    try {
+      const session = await this.findOne({where:{session_token: sessionToken}});
+      if (session) {
+        const now = new Date();
+        const expiryDate = new Date(now.getTime() + 30 * 60 * 1000); // Add 30 minutes to current time
+        console.log('Ping, Ping, Ping')
+        // Update the session's updated_at and expires_at timestamps
+        session.updated_at = now;
+        session.expires_at = expiryDate;
+  
+        // Mark the fields as changed so Sequelize knows to update them
+        session.changed('updated_at', true);
+        session.changed('expires_at', true);
+        
+        await session.save();
+      }
+    } catch (err) {
       console.error('Error in session model ping: ', err);
     }
   }
@@ -36,7 +43,9 @@ class Session extends Model{
           if(session.active == false){
             this.calcMinutes(sessionToken)
           }else{
-            this.updatePing(sessionToken)
+            session.updated_at = now;
+            session.changed('updated_at', true);
+            await session.save();
           }
         }else{
           throw new TypeError('The session active status matches your input');
@@ -86,7 +95,9 @@ class Session extends Model{
         session.active = false;  // mark session as inactive
         await session.save();  // save the updated session back to the database
         await this.calcMinutes(session.session_token)
-        await this.updatePing(session.session_token)
+        session.updated_at = now;
+        session.changed('updated_at', true);
+        await session.save();
       }
       console.log("findExpiredSessions: Found and deactivated expired sessions.");
     } catch (err) {
@@ -107,21 +118,13 @@ class Session extends Model{
       console.error('Error in session model clearExpiredSessions: ', err);
     }
   }
-// this is an auxuilary function ill keep
-  static async removeAll() {
+  static async getAllSessionTokens() {
     try {
-      const now = new Date();
-      await this.destroy({
-        where: {
-          expires_at: {
-            [Op.lt]: now // [Op.lt] stands for "less than" (the < operator in SQL). This condition translates to: "where expires_at is less than now"
-          },
-           active: false // sessions that are not active
-        }
-      });
-      console.log("removeExpiredSessions: Expired sessions removed");
-    } catch(err) {
-      console.error("Error removing expired sessions: ", err);
+      const sessions = await this.findAll();
+      const sessionTokens = sessions.map(session => session.session_token);
+      return sessionTokens;
+    } catch (err) {
+      console.error('Error in retrieving session tokens: ', err);
     }
   }
 }
