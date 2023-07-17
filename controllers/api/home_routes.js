@@ -4,7 +4,7 @@ const Post = require('../../models/posts')
 const User = require('../../models/users')
 const Session = require('../../models/sessions');
 const fetch = require('node-fetch');
-
+const chalk = require('chalk');
 // Utility function to fetch posts, comments, and users
 async function fetchPostData() {
     return Promise.all([Post.findAll(), Comment.findAll(), User.findAll()])
@@ -75,8 +75,7 @@ async function checkSession(req, res, next){
       req.session.active = true;
       await req.session.save(),
       next();
-      console.log("Session is valid, browser and Database match: ", req.cookies.session_token)
-   
+      console.log(chalk.blue("Session is valid, browser and Database match: "), chalk.green(req.cookies.session_token), "|", chalk.blue("Session user_id: "), chalk.green(req.session.user_id))
     } catch (err) {
       console.error('Error validating session token: ', err);
       next(err);

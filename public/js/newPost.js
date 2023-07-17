@@ -5,7 +5,7 @@
 document.addEventListener('DOMContentLoaded', ()=>{
     let form = document.getElementById('post_form');
     let title = document.getElementById('postTitle');
-    let submitBtn = document.getElementById('post-submit');
+    let loading = document.getElementById('loading'); 
     // make sure your not connecting your html elemet to the CKEDITOR more than once
     // or it will throw errrors
     let editor;
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
     form.addEventListener('submit', async (event)=>{
         event.preventDefault();
-
+        loading.style.display = 'block';
         if(postContent.trim() == "" || title.value.trim() == ""){
             alert('Cannot pass empty dataset')
             console.error('Cannot pass empty dataset')
@@ -47,7 +47,10 @@ document.addEventListener('DOMContentLoaded', ()=>{
                 throw new Error('Network response was not ok.')
             }
             // send user to /viewposts in the dashboard
-            setTimeout(() => {window.location.href = "/dashboard/viewposts";}, 500);
+            setTimeout(() => {
+                window.location.href = "/dashboard/viewposts";
+                loading.style.display = 'none';
+            }, 500);
         }catch(err){
             console.error('Error with new post', err)
         }

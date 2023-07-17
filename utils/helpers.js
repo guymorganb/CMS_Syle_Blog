@@ -19,6 +19,19 @@ Handlebars.registerHelper('randomImage', function() {
     return images[randomIndex];
 });
 
+Handlebars.registerHelper('randomGif', function() {
+    const images = ["https://i.gifer.com/yy3.gif", "https://i.gifer.com/SUV4.gif", "https://i.gifer.com/A3bi.gif", "https://i.gifer.com/6os.gif", "https://i.gifer.com/9viJ.gif", "https://i.gifer.com/bfR.gif", "https://i.gifer.com/o6m.gif", "https://i.gifer.com/4FB4.gif"];
+    
+    // Generate a new random index different from the previous one
+    let randomIndex = previousRandomIndex;
+    while (randomIndex === previousRandomIndex) {
+        randomIndex = Math.floor(Math.random() * images.length);
+    }
+    // Update the previous random index
+    previousRandomIndex = randomIndex;
+    return images[randomIndex];
+});
+
 // this help give handlebars the ability to have logical operators in its #ifCond statments
 Handlebars.registerHelper('ifCond', function(v1, operator, v2, options) {
     switch (operator) {
