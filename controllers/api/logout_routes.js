@@ -49,9 +49,7 @@ router.get('/',checkAuth ,(req, res) => {
 // '/logout/confirm' endpoint
 router.get('/confirm', (req, res) => {
     try{
-        let sessionToken =  req.cookies.session_token
-        Session.updateActiveStatus(false, sessionToken)
-        Session.kill(sessionToken);
+      
         // check if the user session token is already valid
         // if not valid then give them the login screen
         fetch('https://source.unsplash.com/random')
@@ -63,9 +61,22 @@ router.get('/confirm', (req, res) => {
             imageUrl = "/img/tech2.png";
         })
         .finally(() => {
-            try{
-                // kill the user session and set their logged in status to falsy
-                res.status(200).render('logout', { isConfirmLogOut: true, imageUrl })
+            try {
+                // this is how to properly logout**
+                // Kill the user session and set their logged in status to falsy
+                req.session.destroy(function(err) {
+                    if (err) {
+                        // Handle error, you can also use next(err) if you have a error handler middleware in express
+                        console.error(err);
+                        return res.status(500).send('Server Error');
+                    }
+                    let sessionToken =  req.cookies.session_token
+                    Session.updateActiveStatus(false, sessionToken)
+                    Session.kill(sessionToken);
+                    // Session destroyed, user logged out
+                    res.clearCookie('session_token'); // clear the browser cookie
+                    res.status(200).render('logout', { isConfirmLogOut: true, imageUrl });
+                });
             }catch(error){
                 console.error(error);
                 res.status(500).send('Server Error')

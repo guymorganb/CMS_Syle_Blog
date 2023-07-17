@@ -46,7 +46,7 @@ function fetchPostData() {
 // function to randomize the background image but still call the database
 router.get('/', (req, res) => {
     let imageUrl;
-
+    console.log('...........', req.cookies.session_token)
     fetch('https://source.unsplash.com/random')
         .then(response => {
             imageUrl = response.url;
@@ -58,7 +58,11 @@ router.get('/', (req, res) => {
         .finally(() => {
             fetchPostData()
                 .then(postDataList => {
-                    res.status(200).render('homepage', { postDataList, imageUrl });
+                    if(req.cookies.session_token){
+                        res.status(200).render('homepage', { activeSession: true, postDataList, imageUrl });
+                        return;
+                    }
+                    res.status(200).render('homepage', { inActiveSession: true, postDataList, imageUrl });
                 })
                 .catch(error => {
                     console.error(error);

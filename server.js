@@ -55,8 +55,6 @@ sequelize.sync({ force: false }).then(() => {
       }
     }, 60 * 60 * 1000); // Every hour
   
-    
-    
     setInterval(async () => {
       try {
         let tokenArray = await Session.getAllSessionTokens();       // Every 5 minutes, this will run and delete any sessions that are 30 minutes old
