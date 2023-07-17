@@ -3,7 +3,7 @@ const Comment  = require('../../models/comments')
 const Post = require('../../models/posts')
 const User = require('../../models/users')
 const fetch = require('node-fetch');
-const Session = require('../../models/sessions')
+
 // Utility function to fetch posts, comments, and users
 function fetchPostData() {
     return Promise.all([Post.findAll(), Comment.findAll(), User.findAll()])
@@ -44,46 +44,27 @@ function fetchPostData() {
         });
 }
 // function to randomize the background image but still call the database
-router.get('/', async (req, res) => {
-    try {
-        let imageUrl;
-        let userSession = null;
+router.get('/', (req, res) => {
+    let imageUrl;
 
-        const response = await fetch('https://source.unsplash.com/random');
-        imageUrl = response.url;
-
-        if(req.cookies.session_token) {
-            let sessionToken = req.cookies.session_token;
-            userSession = await Session.findOne({ where: { session_token: sessionToken } });
-        }
-
-        const postDataList = await fetchPostData();
-        const userAuth = userSession ? true : false;
-        res.status(200).render('homepage', { isAuth: userAuth, postDataList, imageUrl });
-    } 
-    catch (error) {
-        console.error(error);
-
-        // Fallback image url if the fetch operation fails
-        const imageUrl = "/img/banner-bk.jpg";
-
-        // If session cookie exists, try to get the user session
-        if (req.cookies.session_token) {
-            let sessionToken = req.cookies.session_token;
-            userSession = await Session.findOne({ where: { session_token: sessionToken } });
-        }
-
-        // Attempt to fetch the postData
-        try {
-            const postDataList = await fetchPostData();
-            const userAuth = userSession ? true : false;
-            res.status(200).render('homepage', { isAuth: userAuth, postDataList, imageUrl });
-        } 
-        catch (postDataError) {
-            console.error(postDataError);
-            res.status(500).send('Server Error');
-        }
-    }
+    fetch('https://source.unsplash.com/random')
+        .then(response => {
+            imageUrl = response.url;
+        })
+        .catch(error => {
+            console.log(error);
+            imageUrl = "/img/banner-bk.jpg";
+        })
+        .finally(() => {
+            fetchPostData()
+                .then(postDataList => {
+                    res.status(200).render('homepage', { postDataList, imageUrl });
+                })
+                .catch(error => {
+                    console.error(error);
+                    res.status(500).send('Server Error');
+                });
+        });
 });
 
 module.exports = router;

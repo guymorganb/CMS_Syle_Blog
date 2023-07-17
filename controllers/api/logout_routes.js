@@ -40,13 +40,13 @@ async function checkAuth(req, res, next) {
 router.get('/',checkAuth ,(req, res) => {
     imageUrl = "/img/contact-bk.jpg";
     try{
-        res.status(200).render('signout', { isSignoutTemplate: true, imageUrl });
+        res.status(200).render('logout', { isLogoutTemplate: true, imageUrl });
     }catch(error){
         console.error(error);
         res.status(500).send('Server Error')
     }
 });
-// '/signout/confirm' endpoint
+// '/logout/confirm' endpoint
 router.get('/confirm', (req, res) => {
     try{
         let sessionToken =  req.cookies.session_token
@@ -65,7 +65,7 @@ router.get('/confirm', (req, res) => {
         .finally(() => {
             try{
                 // kill the user session and set their logged in status to falsy
-                res.status(200).render('signout', { isConfirmSignOut: true, imageUrl })
+                res.status(200).render('logout', { isConfirmLogOut: true, imageUrl })
             }catch(error){
                 console.error(error);
                 res.status(500).send('Server Error')

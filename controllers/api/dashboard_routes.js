@@ -77,7 +77,7 @@ async function fetchPostData(userId) {
         // This fetches a single user, not all users
         Post.findAll({where:{user_id: userId}}), 
         Comment.findAll({where:{user_id: userId}}), 
-        User.findOne({where:{user_id: userId}}),
+        User.findOne({where:{id: userId}}),
     ])
     // comment is not defined fix this
         .then(([posts, comments, users]) => {
