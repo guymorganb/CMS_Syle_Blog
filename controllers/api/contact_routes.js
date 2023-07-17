@@ -6,21 +6,17 @@ const Session = require('../../models/sessions');
 const User = require('../../models/users') 
 
 // auth user
-
 //its probably best to use a dedicated middleware for authorization like passport.js
 // Middleware to check if user is authenticated
 async function checkAuth(req, res, next) {
-    let cookieUserId = req.session.user_id; // this is the users id that is saved in the session
-
-    // Check if cookieUserId is defined
-    if (!cookieUserId) {
+    let sessionToken = req.cookies.session_token; // this is the users id that is saved in the session
+   
+    if (!sessionToken) {
         res.redirect('/signup')
         return
     }
-
-    // Search for the users session in the database by their cookieUserId saved by express-sessions
-    const userSession = await Session.findOne({ where: { user_id: cookieUserId } }); 
-
+    // Search for the users session in the database by their sessionToken
+    const userSession = await Session.findOne({ where: { session_token: sessionToken } }); 
     try {
         if (!userSession) {
             throw new Error('Session not found'); // throws an error if no session found
@@ -28,7 +24,7 @@ async function checkAuth(req, res, next) {
 
         const rightNow = new Date();
         const sessionExpiration = new Date(userSession.expires_at);
-        
+
         if (rightNow < sessionExpiration) {
             next(); // Session is valid, continue to the requested route
         } else {
@@ -40,8 +36,6 @@ async function checkAuth(req, res, next) {
         res.redirect('/signup');
     }
 }
-
-
 // '/contact' endpoint
 router.get('/',checkAuth,(req, res) => {
     imageUrl = "/img/contact-bk.jpg";

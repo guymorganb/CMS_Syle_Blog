@@ -44,7 +44,7 @@ app.use(routes); // Use the defined routes
 
 sequelize.sync({ force: false }).then(() => {                   // Sync the Sequelize models with the database (force: false to preserve data)
     app.listen(PORT, () => console.log('Server Listening!'));   // Start the server and listen on the specified port
-    
+    // everything in here will run while the server is running
     setInterval(async () => {                                   // Set up interval to find expired sessions and clean them up every hour
         await Session.findExpiredSessions();
       }, 60 * 60 * 1000);

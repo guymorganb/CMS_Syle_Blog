@@ -64,7 +64,7 @@ let validate = async function() {
                     // set the session token in the browser
                     const data = await response.json();
                     document.cookie = `session_token=${data.newSession.session_token}; path=/`; // set the cookie
-                    msgs[msgs.length] = data.message;
+                    msgs[msgs.length] = 'Profile Created!';
                     displayErrorMsgs(msgs)
                     // now load a new box which will allow the user to input their username, sends a GET request
                     setTimeout(() => {window.location.href = '/dashboard';}, 5500);

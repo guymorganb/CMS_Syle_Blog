@@ -9,17 +9,14 @@ require('dotenv').config();
 //its probably best to use a dedicated middleware for authorization like passport.js
 // Middleware to check if user is authenticated
 async function checkAuth(req, res, next) {
-    let cookieUserId = req.session.user_id; // this is the users id that is saved in the session
-    console.log("req.cookies.session_token: ", req.cookies.session_token)
-    // Check if cookieUserId is defined
-    if (!cookieUserId) {
+    let sessionToken = req.cookies.session_token; // this is the users id that is saved in the session
+   
+    if (!sessionToken) {
         res.redirect('/signup')
         return
     }
-
     // Search for the users session in the database by their cookieUserId saved by express-sessions
-    const userSession = await Session.findOne({ where: { user_id: cookieUserId } }); 
-
+    const userSession = await Session.findOne({ where: { session_token: sessionToken } }); 
     try {
         if (!userSession) {
             throw new Error('Session not found'); // throws an error if no session found
@@ -122,7 +119,6 @@ async function fetchPostData(userId) {
             throw err; // or handle the error in some other way
         });
 }
-//---------you gotta blend this function so it works
 // function to randomize the background image but still call the database
 // '/dashboard/viewpost' endpoint
 router.get('/viewposts', checkAuth, async (req, res) => {

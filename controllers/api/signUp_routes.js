@@ -117,7 +117,7 @@ router.post('/newuser/credentials', async (req, res) => {
         }
         const sessionToken = uuid.v4();
         let expiresAt = new Date();
-        // Set the initial expiration time of the session
+        // Set the initial expiration time of the session for 30 minutes
         expiresAt.setMinutes(expiresAt.getMinutes() + 30); 
         const newSession = await Session.create({
             user_id: newUserData.id,

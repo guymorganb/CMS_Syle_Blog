@@ -7,17 +7,17 @@ const sequelize = require('../config/dbconnection.js');
 const { Model, DataTypes, Op } = require('sequelize');
 
 class Session extends Model{
-  // user activity triggers a ping and sends it to the session model altering the updated at time
+  // user activity triggers a ping and sends it to the session model altering the updated at time and expiration time of the session
   static async updatePing(sessionToken) {
     try {
       const session = await this.findOne({where:{session_token: sessionToken}});
       if (session) {
         const now = new Date();
-        const expiryDate = new Date(now.getTime() + 30 * 60 * 1000); // Add 30 minutes to current time
+        const expiryTime = new Date(now.getTime() + 30 * 60 * 1000); // Add 30 minutes to current time
         console.log('Ping, Ping, Ping')
         // Update the session's updated_at and expires_at timestamps
         session.updated_at = now;
-        session.expires_at = expiryDate;
+        session.expires_at = expiryTime;
   
         // Mark the fields as changed so Sequelize knows to update them
         session.changed('updated_at', true);

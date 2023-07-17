@@ -42,7 +42,7 @@ router.post('/', async (req,res)=>{
 
       // Create a new session for the user that will expire in 1 hour
       let expiresAt = new Date();
-      // Set the initial expiration time of the session
+     // Set the initial expiration time of the session for 30 minutes
       expiresAt.setMinutes(expiresAt.getMinutes() + 30); 
       const sessionToken = uuid.v4();
       const newSession = await Session.create({
