@@ -42,6 +42,7 @@ async function checkSession(req, res, next){
       next(err);
     }
 }
+
 // function to randomize the background image but still call the database
 router.get('/',checkSession, (req, res) => {
     let imageUrl;

@@ -4,6 +4,7 @@ const User = require('../../models/users')
 const Post = require('../../models/posts')
 const Comment = require('../../models/comments')
 const getUserPostData = require('../../public/js/SingleUserPosts')
+const fetchPostData = require('../../public/js/allUserPosts')
 const fetch = require('node-fetch');
 const { v5: uuidv5 } = require('uuid');
 const chalk = require('chalk');
@@ -44,15 +45,32 @@ async function checkAuth(req, res, next) {
     }
 }
 // '/dashboard' endpoint
-router.get('/',checkAuth ,(req, res) => {
-    imageUrl = "/img/tech4.png";
- // check if the user session token is already valid
-    // if not valid then give them the login screen
-    try{
-        res.status(200).render('dashboard', { isDashboardTemplate: true, imageUrl });
-    }catch(error){
-        console.error(error);
-        res.status(500).send('Server Error')
+router.get('/',checkAuth , async (req, res) => {
+    let imageUrl;
+    let cookieUserId = req.session.user_id;
+    try {
+        await fetch('https://source.unsplash.com/random')
+        .then(response => {
+            imageUrl = response.url;
+        })
+        .catch(error => {
+            console.log(error);
+            imageUrl = "/img/tech2.png";
+        })
+        const userHasPosts = await getUserPostData(cookieUserId);;
+        
+        if (userHasPosts) {
+            // User has posts
+            const postDataList = await fetchPostData();  // Fetch posts data
+            return res.status(200).render('dashboard', { viewAndCommentTemplate: true, imageUrl, postDataList });
+        } else {
+            // User does not have any posts
+            res.status(200).render('dashboard', { isDashboardTemplate: true, imageUrl });
+        }
+    } catch(err) {
+        // Handle any errors
+        console.error(err);
+        res.status(500).send('Server error');
     }
 });
 
@@ -76,7 +94,7 @@ router.get('/newpost', (req, res) => {
             }
         });
 });
-
+// "/dashboard/viewpost/comment" endpoint
 router.get('/viewpost/comment', async (req, res) => {
     let cookieUserId = req.session.user_id;
     let imageUrl
@@ -93,8 +111,8 @@ router.get('/viewpost/comment', async (req, res) => {
         imageUrl = "/img/tech4.png";
     }
     try {
-        let postDataList = await fetchAllPostData(cookieUserId);
-        res.status(200).render('dashboard', { isViewPostTemplate: true, imageUrl, postDataList });
+        let postDataList = await fetchPostData();
+        res.status(200).render('dashboard', { viewAndCommentTemplate: true, imageUrl, postDataList });
     } catch(error) {
         console.error(error);
         res.status(500).send('Server Error');

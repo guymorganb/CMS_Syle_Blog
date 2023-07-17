@@ -1,10 +1,20 @@
 {{#ifCond isDashboardTemplate '||' isNewPostTemplate}}
 <div class="jumbotron jumbotron-fluid" id="banner" style="background-image: url(/img/banner-bk.jpg);">
 <div class="container text-center text-md-left">
+    <div class="jumbotron jumbotron-fluid" id="banner" style="background-image: url(/img/contact-bk.jpg); border-radius: 7px">
+    <div class="container text-center text-md-left">
 {{/ifCond}}
 {{#if isViewPostTemplate}}
-<div class="jumbotron jumbotron-fluid" id="banner" style="background-image: url(/img/contact-bk.jpg);">
+<div class="jumbotron jumbotron-fluid" id="banner" style="background-image: url(/img/banner-bk.jpg);">
 <div class="container text-center text-md-left">
+    <div class="jumbotron jumbotron-fluid" id="banner" style="background-image: url(/img/contact-bk.jpg); border-radius: 7px">
+    <div class="container text-center text-md-left">
+{{/if}}
+{{#if viewAndCommentTemplate}}
+<div class="jumbotron jumbotron-fluid" id="banner" style="background-image: url(/img/banner-bk.jpg);">
+<div class="container text-center text-md-left">
+    <div class="jumbotron jumbotron-fluid" id="banner" style="background-image: url(/img/contact-bk.jpg); border-radius: 7px">
+    <div class="container text-center text-md-left">
 {{/if}}
 <header>
     <div class="row justify-content-between">
@@ -32,9 +42,13 @@
     </div>
 </div>
 <div class="container my-5 py-2 ">
+{{#if viewAndCommentTemplate}}
+  {{> viewAndComment}}
+{{/if}}
+
 {{#if isDashboardTemplate}}
 <div data-aos="fade-right" data-aos-delay="0" data-aos-duration="1000" data-aos-once="true" class="col-md-12 text-center" >
-    <h2 class="text-center font-weight-bold my-5">More content and functionality in the future maybe</h2>
+    <h2 class="text-center font-weight-bold my-5">Aww...Such Empty. 🙈 Create your first post! 💻</h2>
 </div>
 <div data-aos="fade-left" data-aos-delay="0" data-aos-duration="1000" data-aos-once="true" class="col-md-12 text-center" >
     <div class="jumbotron jumbotron-fluid col-lg-2 col-md-3 col-sm-4 col-6 img-fluid mx-auto d-block" style="border-radius: 10px; background-image: url('{{imageUrl}}');">
