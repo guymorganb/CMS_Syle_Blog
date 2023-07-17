@@ -45,6 +45,7 @@ async function fetchPostData() {
         });
 }
 // this checks if the session is valid and removes any invalid session tokens
+// it also fixes the session if the server somehow dies
 async function checkSession(req, res, next){
     const sessionToken = req.cookies.session_token;
   
@@ -61,7 +62,7 @@ async function checkSession(req, res, next){
           session_token: sessionToken
         }
       });
-  
+      
       if (!session) {
         // There's no session matching the user's token in the database. They are not logged in.
         await res.clearCookie('session_token'); // Clear the invalid token
@@ -69,11 +70,13 @@ async function checkSession(req, res, next){
         next();
         return;
       }
-  
-      // The session token is valid. Proceed with the request.
+      // The session token is valid. reset session values as a backup in event of server disruption
+      req.session.user_id = session.user_id
+      req.session.active = true;
+      await req.session.save(),
       next();
       console.log("Session is valid, browser and Database match: ", req.cookies.session_token)
-      console.log("req.session.user_id: ", req.session.user_id)
+   
     } catch (err) {
       console.error('Error validating session token: ', err);
       next(err);
