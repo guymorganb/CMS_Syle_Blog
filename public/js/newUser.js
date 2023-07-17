@@ -67,7 +67,7 @@ let validate = async function() {
                     msgs[msgs.length] = 'Profile Created!';
                     displayErrorMsgs(msgs)
                     // now load a new box which will allow the user to input their username, sends a GET request
-                    setTimeout(() => {window.location.href = '/dashboard';}, 5500);
+                    setTimeout(() => {window.location.href = '/dashboard';}, 500);
                     return;
                 } else {
                     // Display error message from server

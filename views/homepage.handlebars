@@ -20,11 +20,11 @@
             A place to talk about Tech 
             <br>. . . . . . .a place to learn.
         </p>
-        {{#if userAuth '!=' true}}
+        {{#ifCond userCreds '!=' true}}
         <a href="/login" data-aos="fade" data-aos-easing="linear" data-aos-duration="1000" data-aos-once="true" class="btn my-4 mr-4 font-weight-bold atlas-cta cta-green">Login(authenticate if already logged in remove this button)</a>
 
         <a href="/signup" data-aos="fade" data-aos-easing="linear" data-aos-duration="1000" data-aos-once="true" class="btn my-4 font-weight-bold atlas-cta cta-green">Sign-up(authenticate if already logged in remove this button)</a>
-        {{/if}}
+        {{/ifCond}}
     </div>
 </div>
 <!-- three-blcok -->
