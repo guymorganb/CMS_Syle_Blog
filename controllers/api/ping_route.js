@@ -4,13 +4,8 @@
 const router = require('express').Router();
 const Session = require('../../models/sessions')
 
-
-
-
 // '/ping' endpoint
-
 router.post('/', (req, res) => {
-  console.log('inside ping:req.body ', req.body)
   try{
     const sessionToken = req.cookies.session_token;
     if(!sessionToken){

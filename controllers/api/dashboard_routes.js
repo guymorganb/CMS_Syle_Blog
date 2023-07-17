@@ -72,7 +72,7 @@ router.get('/newpost', (req, res) => {
 });
 
 // Utility function to fetch posts, comments, and users
-async function fetchPostData(userId) {
+async function fetchAllPostData(userId) {
     return Promise.all([
         // This fetches a single user, not all users
         Post.findAll({where:{user_id: userId}}), 
@@ -119,6 +119,57 @@ async function fetchPostData(userId) {
             throw err; // or handle the error in some other way
         });
 }
+async function getUserPostData(userId) {
+    return Promise.all([
+        Post.findAll({where:{user_id: userId}}), 
+        Comment.findAll({where:{user_id: userId}}), 
+        User.findOne({where:{id: userId}})
+    ])
+        .then(([posts, comments, user]) => {
+            // If there are no posts and comments, return a custom message
+            if (posts.length === 0 && comments.length === 0) {
+                return 'No posts or comments found for this user';
+            }
+
+            comments = comments.map(comment => comment.dataValues);
+            posts = posts.map(post => post.dataValues);
+            user = user.dataValues;
+
+            let postDataList = [];
+
+            for (let i = 0; i < posts.length; i++) {
+                let postUser = user;
+                let postComments = comments.filter(comment => comment.post_id === posts[i].id);
+
+                let commentsData = postComments.map(comment => {
+                    let commentUser = user;
+
+                    return {
+                        content: comment.content,
+                        created: new Date(comment.createdAt).toLocaleString(),
+                        username: commentUser ? commentUser.username : null
+                    };
+                });
+
+                let postData = {
+                    userPost: {
+                        title: posts[i].title,
+                        content: posts[i].body,
+                        created: new Date(posts[i].createdAt).toLocaleString(),
+                        username: postUser ? postUser.username : null
+                    },
+                    comments: commentsData
+                };
+                postDataList.push(postData);
+            }
+            return postDataList;
+        })
+        .catch((err) => {
+            console.error("Error fetching post data: ", err);
+            throw err;
+        });
+}
+
 // function to randomize the background image but still call the database
 // '/dashboard/viewpost' endpoint
 router.get('/viewposts', checkAuth, async (req, res) => {
@@ -137,7 +188,7 @@ router.get('/viewposts', checkAuth, async (req, res) => {
         imageUrl = "/img/tech4.png";
     }
     try {
-        let postDataList = await fetchPostData(cookieUserId);
+        let postDataList = await getUserPostData(cookieUserId);
         res.status(200).render('dashboard', { isViewPostTemplate: true, imageUrl, postDataList });
     } catch(error) {
         console.error(error);
@@ -154,6 +205,10 @@ router.post('/viewposts/createnew', checkAuth, async (req, res) => {
         res.status(401).redirect('/viewposts');
         return;
     }
+    console.log('breakpoint in dashborad route')
+
+    console.log('past the breakpoint in dashborad route')
+    return
     let uuid = uuidv5(title, process.env.NAMESPACE);
     let newBlogPost = {
         id: uuid,

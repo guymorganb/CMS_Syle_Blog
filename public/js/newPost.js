@@ -5,11 +5,22 @@
 document.addEventListener('DOMContentLoaded', ()=>{
     let form = document.getElementById('post_form');
     let title = document.getElementById('postTitle');
-    let postContent = CKEDITOR.instances.postContent.getData();
-    let submitBtn = document.getElementById('post-submit')
+    let submitBtn = document.getElementById('post-submit');
+
+    let editor = CKEDITOR.replace( 'postContent' );
+    let postContent = editor.getData();
+
+    editor.on( 'change', function( evt ) {
+        postContent = evt.editor.getData();
+    });
     form.addEventListener('submit', async (event)=>{
         event.preventDefault();
         // Generate a UUID based on the title of the blog post
+        let postContent = CKEDITOR.instances.postContent.getData();
+        
+        
+        console.log('content: ',postContent)
+    
         if(postContent == ""){
             alert('Cannot pass empty dataset')
             console.error('Cannot pass empty dataset')

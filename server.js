@@ -13,6 +13,7 @@ const path = require('path');                                           // Impor
 const helpers = require('./utils/helpers');                             // Import the helper functions
 const Session = require('./models/sessions');
 var cookieParser = require('cookie-parser')
+const { Op } = require('sequelize');
 const hbs = exphbs.create({                                             // Create an instance of Express Handlebars with helpers and default layout
     helpers: helpers,
     defaultLayout: 'main' 

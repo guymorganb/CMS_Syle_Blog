@@ -2,10 +2,11 @@ const router = require('express').Router();
 const Comment  = require('../../models/comments')
 const Post = require('../../models/posts')
 const User = require('../../models/users')
+const Session = require('../../models/sessions');
 const fetch = require('node-fetch');
 
 // Utility function to fetch posts, comments, and users
-function fetchPostData() {
+async function fetchPostData() {
     return Promise.all([Post.findAll(), Comment.findAll(), User.findAll()])
         .then(([posts, comments, users]) => {
             comments = comments.map(comment => comment.dataValues);
@@ -43,10 +44,46 @@ function fetchPostData() {
             return postDataList;
         });
 }
+// this checks if the session is valid and removes any invalid session tokens
+async function checkSession(req, res, next){
+    const sessionToken = req.cookies.session_token;
+  
+    if (!sessionToken) {
+      // There's no session token in the user's cookies. They are not logged in.
+      next();
+      return;
+    }
+  
+    try {
+      // Retrieve the session using the token
+      const session = await Session.findOne({
+        where: {
+          session_token: sessionToken
+        }
+      });
+  
+      if (!session) {
+        // There's no session matching the user's token in the database. They are not logged in.
+        await res.clearCookie('session_token'); // Clear the invalid token
+        console.log("Session cleared")
+        next();
+        return;
+      }
+  
+      // The session token is valid. Proceed with the request.
+      next();
+      console.log("Session is valid, browser and Database match")
+    } catch (err) {
+      console.error('Error validating session token: ', err);
+      next(err);
+    }
+}
+
+
 // function to randomize the background image but still call the database
-router.get('/', (req, res) => {
+router.get('/',checkSession, (req, res) => {
     let imageUrl;
-    console.log('...........', req.cookies.session_token)
+    setTimeout(() => {console.log('...........', req.cookies.session_token)}, 500);
     fetch('https://source.unsplash.com/random')
         .then(response => {
             imageUrl = response.url;
