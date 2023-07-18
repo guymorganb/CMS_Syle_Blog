@@ -22,6 +22,8 @@ async function fetchPostData() {
                     let commentUser = users.find(user => user.id === comment.user_id);
 
                     return {
+                        id: comment.id, // This is the comment's ID
+                        postId: posts[i].id, // This is the ID of the post the comment belongs to
                         content: comment.content,
                         created: new Date(comment.createdAt).toLocaleString(),
                         username: commentUser ? commentUser.username : null
@@ -29,6 +31,7 @@ async function fetchPostData() {
                 });
 
                 let postData = {
+                    id: posts[i].id,
                     userPost: {
                         title: posts[i].title,
                         content: posts[i].body,

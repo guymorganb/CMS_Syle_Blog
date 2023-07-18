@@ -26,11 +26,11 @@
     align-items: flex-start;
     
 }
-.btn{
+.btns{
     display: flex;
     flex-direction: row;
 }
-#post-submit:hover {
+#Sign-up:hover {
     box-shadow: 0px 0px 10px lightgray !important;
     transform: scale(1.05) !important;
 }

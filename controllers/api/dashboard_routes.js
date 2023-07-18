@@ -45,6 +45,7 @@ async function checkAuth(req, res, next) {
     }
 }
 // '/dashboard' endpoint
+// allows user to view all community posts, but if user has no posts, they cant see everyones posts
 router.get('/',checkAuth , async (req, res) => {
     let imageUrl;
     let cookieUserId = req.session.user_id;
@@ -62,6 +63,7 @@ router.get('/',checkAuth , async (req, res) => {
         if (userHasPosts) {
             // User has posts
             const postDataList = await fetchPostData();  // Fetch posts data
+            console.log("postDataList: ", postDataList)
             return res.status(200).render('dashboard', { viewAndCommentTemplate: true, imageUrl, postDataList });
         } else {
             // User does not have any posts
@@ -75,6 +77,7 @@ router.get('/',checkAuth , async (req, res) => {
 });
 
 // '/dashboard/newpost' endpoint
+// allows user to access new post feature
 router.get('/newpost', (req, res) => {
     let imageUrl;
     fetch('https://source.unsplash.com/random')
@@ -94,33 +97,8 @@ router.get('/newpost', (req, res) => {
             }
         });
 });
-// "/dashboard/viewpost/comment" endpoint
-router.get('/viewpost/comment', async (req, res) => {
-    let cookieUserId = req.session.user_id;
-    let imageUrl
-
-    if(!cookieUserId){
-        return res.status(401).json({ error: "No user id found in session"})
-    }
-
-    try{
-        let response = await fetch('https://source.unsplash.com/random');
-        imageUrl = response.url;
-    }catch(err){
-        console.error(err);
-        imageUrl = "/img/tech4.png";
-    }
-    try {
-        let postDataList = await fetchPostData();
-        res.status(200).render('dashboard', { viewAndCommentTemplate: true, imageUrl, postDataList });
-    } catch(error) {
-        console.error(error);
-        res.status(500).send('Server Error');
-    }
-});
-
-// function to randomize the background image but still call the database
 // '/dashboard/viewpost' endpoint
+// allows user to view their posts
 router.get('/viewposts', checkAuth, async (req, res) => {
     let cookieUserId = req.session.user_id;
     let imageUrl
@@ -145,6 +123,7 @@ router.get('/viewposts', checkAuth, async (req, res) => {
     }
 });
 // '/dashboard/viewposts/createnew' endpoint
+// creates new post
 router.post('/viewposts/createnew', checkAuth, async (req, res) => {
     try{
         const {title, body} = req.body;
