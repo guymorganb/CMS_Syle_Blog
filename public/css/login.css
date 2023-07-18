@@ -34,7 +34,7 @@ label {
     margin-bottom: 0.5em; /* Add margin at the bottom of the label */
 }
 
-.btn{
+.btns{
     display: flex;
     flex-direction: row;
 }

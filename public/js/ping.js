@@ -3,11 +3,10 @@
  */
 const init = () =>{
   document.addEventListener('DOMContentLoaded', async ()=>{
-    // Start the heartbeat system after the user logs in
-    console.log("Your inside the ping")
+    // Start the ping system after the user logs in
     try{
+      // split apart the cookie from the document object so you can use it
       const session_token = document.cookie.split('; ').find(row => row.startsWith('session_token')).split('=')[1];
-
       if (!session_token) {
         console.error('Session token not found in cookies');
         // handle error here, maybe redirect the user to login page
@@ -23,7 +22,7 @@ const init = () =>{
         })
         
       if(response.ok){
-        console.log("ping ran")
+        console.log("ping status ok")
         return
       }
     }catch(err){

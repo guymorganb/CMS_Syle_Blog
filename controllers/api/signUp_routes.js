@@ -119,6 +119,7 @@ router.post('/newuser/credentials', async (req, res) => {
         let expiresAt = new Date();
         // Set the initial expiration time of the session for 30 minutes
         expiresAt.setMinutes(expiresAt.getMinutes() + 30); 
+        // setting the seeeion in the database
         const newSession = await Session.create({
             user_id: newUserData.id,
             session_token: sessionToken,  // session IDs
@@ -127,7 +128,7 @@ router.post('/newuser/credentials', async (req, res) => {
             minutes_active: 0,  // update this value as needed
         });
 
-        // sets the session as active
+        // sets the express-session as active and the user_id
         req.session.user_id = newUserData.id;
         req.session.active = true;
         await req.session.save();

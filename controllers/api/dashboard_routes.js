@@ -3,8 +3,11 @@ const Session = require('../../models/sessions');
 const User = require('../../models/users') 
 const Post = require('../../models/posts')
 const Comment = require('../../models/comments')
+const getUserPostData = require('../../public/js/SingleUserPosts')
+const fetchPostData = require('../../public/js/allUserPosts')
 const fetch = require('node-fetch');
 const { v5: uuidv5 } = require('uuid');
+const chalk = require('chalk');
 require('dotenv').config();
 //its probably best to use a dedicated middleware for authorization like passport.js
 // Middleware to check if user is authenticated
@@ -21,11 +24,17 @@ async function checkAuth(req, res, next) {
         if (!userSession) {
             throw new Error('Session not found'); // throws an error if no session found
         }
-
         const rightNow = new Date();
         const sessionExpiration = new Date(userSession.expires_at);
         if (rightNow < sessionExpiration) {
+            // resets the session
+            req.session.user_id = userSession.user_id
+            req.session.active = true;
+            await req.session.save(),
+
             next(); // Session is valid, continue to the requested route
+
+            console.log(chalk.blue("Session is valid, browser and Database match: "), chalk.green(req.cookies.session_token), "|", chalk.blue("Session user_id: "), chalk.green(req.session.user_id));
         } else {
             // Session is not valid, redirect the user to the signup page
             res.redirect('/signup');
@@ -36,23 +45,41 @@ async function checkAuth(req, res, next) {
     }
 }
 // '/dashboard' endpoint
-router.get('/',checkAuth ,(req, res) => {
-    imageUrl = "/img/tech4.png";
- // check if the user session token is already valid
-    // if not valid then give them the login screen
-    try{
-        res.status(200).render('dashboard', { isDashboardTemplate: true, imageUrl });
-    }catch(error){
-        console.error(error);
-        res.status(500).send('Server Error')
+// allows user to view all community posts, but if user has no posts, they cant see everyones posts
+router.get('/',checkAuth , async (req, res) => {
+    let imageUrl;
+    let cookieUserId = req.session.user_id;
+    try {
+        await fetch('https://source.unsplash.com/random')
+        .then(response => {
+            imageUrl = response.url;
+        })
+        .catch(error => {
+            console.log(error);
+            imageUrl = "/img/tech2.png";
+        })
+        const userHasPosts = await getUserPostData(cookieUserId);;
+        
+        if (userHasPosts) {
+            // User has posts
+            const postDataList = await fetchPostData();  // Fetch posts data
+            console.log("postDataList: ", postDataList)
+            return res.status(200).render('dashboard', { viewAndCommentTemplate: true, imageUrl, postDataList });
+        } else {
+            // User does not have any posts
+            res.status(200).render('dashboard', { isDashboardTemplate: true, imageUrl });
+        }
+    } catch(err) {
+        // Handle any errors
+        console.error(err);
+        res.status(500).send('Server error');
     }
 });
 
 // '/dashboard/newpost' endpoint
+// allows user to access new post feature
 router.get('/newpost', (req, res) => {
     let imageUrl;
- // check if the user session token is already valid
-    // if not valid then give them the login screen
     fetch('https://source.unsplash.com/random')
         .then(response => {
             imageUrl = response.url;
@@ -70,57 +97,8 @@ router.get('/newpost', (req, res) => {
             }
         });
 });
-
-// Utility function to fetch posts, comments, and users
-async function fetchPostData(userId) {
-    return Promise.all([
-        // This fetches a single user, not all users
-        Post.findAll({where:{user_id: userId}}), 
-        Comment.findAll({where:{user_id: userId}}), 
-        User.findOne({where:{id: userId}}),
-    ])
-    // comment is not defined fix this
-        .then(([posts, comments, users]) => {
-            comments = comments.map(comment => comment.dataValues);
-            posts = posts.map(post => post.dataValues)
-            users = users.map(user => user.dataValues)
-
-            let postDataList = [];
-
-            for (let i = 0; i < posts.length; i++) {
-                let postUser = users.find(user => user.id === posts[i].user_id);
-                let postComments = comments.filter(comment => comment.post_id === posts[i].id);
-
-                let commentsData = postComments.map(comment => {
-                    let commentUser = users.find(user => user.id === comment.user_id);
-
-                    return {
-                        content: comment.content,
-                        created: new Date(comment.createdAt).toLocaleString(),
-                        username: commentUser ? commentUser.username : null
-                    };
-                });
-
-                let postData = {
-                    userPost: {
-                        title: posts[i].title,
-                        content: posts[i].body,
-                        created: new Date(posts[i].createdAt).toLocaleString(),
-                        username: postUser ? postUser.username : null
-                    },
-                    comments: commentsData
-                };
-                postDataList.push(postData);
-            }
-            return postDataList;
-        })
-        .catch((err) => {
-            console.error("Error fetching post data: ", err);
-            throw err; // or handle the error in some other way
-        });
-}
-// function to randomize the background image but still call the database
 // '/dashboard/viewpost' endpoint
+// allows user to view their posts
 router.get('/viewposts', checkAuth, async (req, res) => {
     let cookieUserId = req.session.user_id;
     let imageUrl
@@ -137,7 +115,7 @@ router.get('/viewposts', checkAuth, async (req, res) => {
         imageUrl = "/img/tech4.png";
     }
     try {
-        let postDataList = await fetchPostData(cookieUserId);
+        let postDataList = await getUserPostData(cookieUserId);
         res.status(200).render('dashboard', { isViewPostTemplate: true, imageUrl, postDataList });
     } catch(error) {
         console.error(error);
@@ -145,29 +123,37 @@ router.get('/viewposts', checkAuth, async (req, res) => {
     }
 });
 // '/dashboard/viewposts/createnew' endpoint
+// creates new post
 router.post('/viewposts/createnew', checkAuth, async (req, res) => {
-    const {title, body} = req.body;
-    let cookieUserId = req.session.user_id;
-
-    if(!cookieUserId){
-        console.error({error: "No user id found in session"})
-        res.status(401).redirect('/viewposts');
-        return;
-    }
-    let uuid = uuidv5(title, process.env.NAMESPACE);
-    let newBlogPost = {
-        id: uuid,
-        title: title,
-        body: body,
-        user_id: cookieUserId
-    }
-
     try{
-        await Post.create(newBlogPost)
-        res.redirect('/dashboard/viewposts');
+        const {title, body} = req.body;
+        let cookieUserId = req.session.user_id;
+        console.log("req.session.user_id: ",  req.session.user_id)
+            if(!cookieUserId){
+                console.error({error: "No user id found in session"})
+                res.status(401).redirect('/viewposts');
+                return;
+            }
+        let namespace = process.env.NAMESPACE
+
+            let uuid = uuidv5(title, namespace);
+            let newBlogPost = {
+                id: uuid,
+                title: title,
+                body: body,
+                user_id: cookieUserId
+            }
+
+        try{
+            await Post.create(newBlogPost)
+            
+            res.redirect('/dashboard/viewposts');
+        }catch(err){
+            console.error(err);
+            res.status(500).json({message: 'Server Error', error: err})
+        }
     }catch(err){
-        console.error(err);
-        res.status(500).json({message: 'Server Error', error: err})
+        res.status(500).json({message: "server error", Error: err})
     }
 });
 

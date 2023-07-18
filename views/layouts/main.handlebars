@@ -20,8 +20,8 @@
     {{/if}}
     {{#if isContactTemplate}}
     <link rel="stylesheet" href="/css/contact.css">
-    
     {{/if}}
+    <link rel="stylesheet" href="/css/viewAndComment.css">
     <!-- bootstrap.min.css -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <!-- font-awesome -->
@@ -34,26 +34,42 @@
     <link rel="stylesheet" href="/css/aos.css">
 </head>
 <body>
+{{{body}}}
+{{#if viewAndCommentTemplate}}
+<script src="/js/commentPost.js" defer ></script>
+<script src="/ckeditor/ckeditor.js"defer></script>
+<script>
+  CKEDITOR.replace('comments', {
+    height: 100,
+    width: '100%',
+    toolbarGroups: [
+        { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+        { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align' ] },
+        { name: 'links' },
+    ],
+    removeButtons: 'Underline,Subscript,Superscript,Anchor,Styles,Specialchar,Print'
+});
+</script>
+{{/if}}
 {{#if isDashboardTemplate}}
 <script src="/js/ping.js" defer ></script>
 {{/if}}
-{{{body}}}
 </body>
 {{#if isConfirmLogOut}}
 <script src="/js/logout.js" defer ></script>
 {{/if}}
 {{#if isLoginTemplate}}
-<script src="/js/loginValidation.js"></script>
+<script src="/js/loginValidation.js"defer></script>
 {{/if}}
 {{#if isSignUpTemplate}}
-<script src="/js/signUpValidation.js"></script>
+<script src="/js/signUpValidation.js"defer></script>
 {{/if}}
 {{#if isNewUserTemplate}}
-<script src="/js/newUser.js"></script>
+<script src="/js/newUser.js"defer></script>
 {{/if}}
 {{#if isNewPostTemplate}}
 <script src="/js/ping.js" defer ></script>
-<script src="/ckeditor/ckeditor.js"></script>
+<script src="/ckeditor/ckeditor.js"defer></script>
 <script>
     CKEDITOR.replace( 'postContent', {
                height: 300,
@@ -76,7 +92,7 @@
         ]
     } );
 </script>
-<script src="/js/newPost.js"></script>
+<script src="/js/newPost.js"defer></script>
 {{/if}}
 {{#if isViewPostTemplate}}
 

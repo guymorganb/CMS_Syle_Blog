@@ -24,7 +24,8 @@ User.init( {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
+      unique: true,
     },
     first_name: {
       type: DataTypes.STRING(30),

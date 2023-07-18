@@ -33,50 +33,119 @@ h2 {
 }
 
 .post-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    box-shadow: 0 0 10px rgba(0, 0, 255, 0.3);
+    margin: 3px;
     background-color: #192440; /* Set the background color */
     border: 2px solid #555; /* Adjust border color */
     padding: 15px;
-    margin: 10px 0;
-    border-radius: 5px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Add box shadow */
+    border-radius: 10px;
 }
-
-.post-title-container {
+.post-section {
+    flex: 2;
     display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 0;
+    border: 0;
+    padding-right: 30px !important;
+}
+.post-title-container {
+    display: block;
+    max-height: 350px;
+    overflow: auto; 
+    align-self: center;
+    flex-shrink: 1;
+    padding: 10px;
+    border-radius: 14px;
+    
+    flex-direction: row;
+    
+
+
+
     justify-content: space-between;
     text-align: left;
     background-color: #f0f0f0; /* Set a light background color for content */
     border: 2px solid #555; /* Adjust border color */
-    padding: 15px;
     margin: 10px 0;
     border-radius: 5px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Add box shadow */
 }
-
+.post-comment-container{
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    word-wrap: break-word;
+    overflow: auto;
+    white-space: normal;
+}
 .post-title {
     flex-grow: 1;
     margin-right: 10px;
     font-family: 'Roboto Slab', serif;
     font-weight: bolder;
+    word-wrap: break-word;
+    max-width:600px;
 }
-
 .post-author {
     text-align: right;
     font-family: 'Caveat', serif;
     font-weight: bolder;
 }
+.post-elements{
+    display: flex;
+    flex-direction: column;
+}
+.comment-element{
+    display: flex;
+}
+.btn-container {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    margin-top: 10px;
+    margin-left: 10px
+}
 
+.btn {
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    margin-top: 0.5em; /* Add top margin for spacing */
+    margin-right: 0.5em; /* Add right margin for spacing */
+    padding: 0.5em 1em; /* Adjust padding for button size */
+    background-color: #73abe8; /* Button background color */
+    color: white; /* Button text color */
+    border: 2px solid lightgray !important;
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer;
+    transition: 0.3s !important;
+    font-family: 'Caveat', serif;
+    box-shadow: 0 0 10px rgba(0, 0, 255, 0.3);
+}
 .post-content {
+    max-height: 350px; 
     margin-bottom: 10px;
+    word-wrap: break-word;
+    width:100%;
+    flex-direction: row;  
+    overflow-y: auto;
     background-color: #f0f0f0; /* Set a light background color for content */
+    flex-shrink: 1;
     border: 2px solid #555; /* Adjust border color */
-    padding: 15px;
+    padding: 10px;
     margin: 10px 0;
     border-radius: 5px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Add box shadow */
     font-family: 'Playfair Display', serif;
 }
-
+.comments-section {
+    flex: 1;
+}
 .comment-container {
     display: flex;
     justify-content: space-between; 
@@ -91,6 +160,9 @@ h2 {
 .comment-content {
     margin-right: 10px;
     font-family: 'Rajdhani', serif;
+    word-wrap: break-word;
+    max-width: 250px;
+    overflow: auto;
 }
 
 .comment-author {
@@ -98,7 +170,16 @@ h2 {
     font-family: 'Caveat', serif;
     font-weight: bolder;
 }
-
+.comments-only{
+    max-height: 350px;  /* Set the maximum height */
+    overflow: auto;  /* Make it scrollable vertically */
+    padding: 0px 5px 0px 5px !important; /* Add padding */
+    max-width: 350px;
+    flex-direction: row;  
+    overflow-y: auto;  /* Make it scrollable vertically */
+    flex-shrink: 1;
+    margin-left: -30px
+}
 
 h2 {
     font-size: 2.8rem !important;

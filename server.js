@@ -13,6 +13,7 @@ const path = require('path');                                           // Impor
 const helpers = require('./utils/helpers');                             // Import the helper functions
 const Session = require('./models/sessions');
 var cookieParser = require('cookie-parser')
+const { Op } = require('sequelize');
 const hbs = exphbs.create({                                             // Create an instance of Express Handlebars with helpers and default layout
     helpers: helpers,
     defaultLayout: 'main' 
@@ -55,13 +56,10 @@ sequelize.sync({ force: false }).then(() => {
       }
     }, 60 * 60 * 1000); // Every hour
   
-    
-    
     setInterval(async () => {
       try {
         let tokenArray = await Session.getAllSessionTokens();       // Every 5 minutes, this will run and delete any sessions that are 30 minutes old
-        for(let token of tokenArray){                               // it will also calculate the users time every 5 minutes
-            await Session.calcMinutes(token);
+        for(let token of tokenArray){                               // it will also calculate the users time every 5 minutes, this feature needs more work though
         }
         const cutoff = new Date(Date.now() - (5 * 60 * 1000));     // 5 minutes ago,
         await Session.clearExpiredSessions(cutoff);                 // if updated_at is less than (rightNow - 5 minutes), delete the session.
