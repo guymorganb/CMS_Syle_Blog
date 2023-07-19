@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
+    "heroku-postbuild": "echo Skipping migration step",
     "test": "echo \"Error: no test specified\" && exit 1",
     "seeds": "node seeds/seeds.js",
     "dev": "nodemon server.js"
