@@ -4,7 +4,7 @@ const Post = require('../../models/posts')
 const getUserPostData = require('../../public/js/SingleUserPosts')
 const fetchPostData = require('../../public/js/allUserPosts')
 const fetch = require('node-fetch');
-const { v5: uuidv5 } = require('uuid');
+const { v4: uuidv4 } = require('uuid');
 const chalk = require('chalk');
 require('dotenv').config();
 //its probably best to use a dedicated middleware for authorization like passport.js
@@ -131,9 +131,10 @@ router.post('/viewposts/createnew', checkAuth, async (req, res) => {
                 res.status(401).redirect('/viewposts');
                 return;
             }
+            /// something went wrong here
         let namespace = process.env.NAMESPACE
 
-            let uuid = uuidv5(title, namespace);
+            let uuid = uuidv4();
             let newBlogPost = {
                 id: uuid,
                 title: title,
