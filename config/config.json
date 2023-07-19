@@ -1,0 +1,13 @@
+{
+    "development":{
+        "username": "guymorganb",
+        "password": "Colorado1!",
+        "database": "tech_blog",
+        "host": "127.0.0.1",
+        "dialect": "mysyl"
+    },
+    "production":{
+        "use_env_variable": "JAWSDB_URL",
+        "dialect": "mysql"
+    }
+}
