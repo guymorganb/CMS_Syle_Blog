@@ -4,6 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "migrate": "sequelize db:migrate",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
     "seeds": "node seeds/seeds.js",
@@ -27,6 +28,7 @@
     "path": "^0.12.7",
     "sequelize": "^6.32.1",
     "sequelize-auto": "^0.8.8",
+    "sequelize-cli": "^6.6.1",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

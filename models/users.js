@@ -3,7 +3,7 @@
  *
  * @module models/User
  */
-const sequelize = require('../config/dbconnection.js');
+const sequelize = require('../config/connection.js');
 const{ Model, DataTypes} = require('sequelize');
 const bcrypt = require('bcrypt')
 

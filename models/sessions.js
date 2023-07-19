@@ -3,7 +3,7 @@
  *
  * @module models/session
  */
-const sequelize = require('../config/dbconnection.js');
+const sequelize = require('../config/connection.js');
 const { Model, DataTypes, Op } = require('sequelize');
 
 class Session extends Model{
