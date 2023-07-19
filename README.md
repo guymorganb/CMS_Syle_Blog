@@ -24,9 +24,11 @@
 
   ## Images
   - Here are images of the project
-  ![step 1](https://github.com/guymorganb/Pet-Search/blob/main/assets/secondaryAssests/FirstPageInfo.png?raw=true)
+  ![step 1](https://github.com/guymorganb/CMS_Syle_Blog/blob/main/public/img/CMSBlogNewPost.png?raw=true)
 
-  ![step 1](https://github.com/guymorganb/Pet-Search/blob/main/assets/secondaryAssests/SearchPage.png?raw=true) 
+  ![step 2](https://github.com/guymorganb/CMS_Syle_Blog/blob/main/public/img/createProfileScreenshot.png?raw=true) 
+
+  ![step 3](https://github.com/guymorganb/CMS_Syle_Blog/blob/main/public/img/CMSBlogDashboard.png?raw=true) 
 
   ## License
      - Artistic License
