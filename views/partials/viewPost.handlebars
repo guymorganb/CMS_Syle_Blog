@@ -6,7 +6,10 @@
         <h4 class="post-title">{{this.userPost.title}}</h4>
         <span class="post-author">- {{this.userPost.username}} : {{this.userPost.created}}</span>
     </div>
-    <p >{{{this.userPost.content}}}</p>
+    <div style="background: rgba(255, 227, 167, 0.4); padding: 5px; border-radius:5px;">
+<p >{{{this.userPost.content}}}</p>
+    </div>
+    
     <div>
         <button class="btn-delete" data-id="{{this.userPost.id}}">Delete</button>
         <button class="btn-update" data-id="{{this.userPost.id}}">Update</button>
