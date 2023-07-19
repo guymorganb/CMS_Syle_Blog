@@ -8,7 +8,7 @@ const User = require('../../models/users')
 async function fetchPostData() {
     return Promise.all([Post.findAll(), Comment.findAll(), User.findAll()])
         .then(([posts, comments, users]) => {
-            comments = comments.map(comment => comment.dataValues);
+            comments = comments ? comments.map(comment => comment.dataValues) : [];
             posts = posts.map(post => post.dataValues)
             users = users.map(user => user.dataValues)
 
