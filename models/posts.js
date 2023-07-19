@@ -3,7 +3,7 @@
  *
  * @module models/Post
  */
-const sequelize = require('../config/dbconnection.js');
+const sequelize = require('../config/connection.js');
 const { Model, DataTypes } = require('sequelize');
 
 class Post extends Model{}
