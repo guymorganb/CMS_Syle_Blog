@@ -42,23 +42,23 @@
 {{#each postDataList}}
     <div data-aos="fade-up" data-aos-delay="0" data-aos-duration="1000" data-aos-once="true" class="col-md-12 text-center post-container" style="background-image: url('{{../imageUrl}}');">
         <img src="{{randomGif}}" alt="Anti-spam" class="mx-auto" style="max-width: 300px; max-height: 300px;">
-        <div class="post-elements col-md-10">
+        <div class="post-elements col-md-12">
         <div class="comment-element">
-        <div class="post-section col-md-9">
-            <div class="post-title-container">
-            <div class="post-title-container">
+        <div class="post-section col-sm-6 col-md-8 col-lg-10">
+            <div class="post-title-container ">
+            <div class="post-title-container ">
                 <h5 class="post-title">{{this.userPost.title}}</h5>
                 <span class="post-author">- {{this.userPost.username}} : {{this.userPost.created}}</span>
             </div>
-                <p class="post-content">{{this.userPost.content}} {{this.userPost.username}} : {{this.userPost.created}} </p>
+                <p class="post-content">{{this.userPost.content}}{{this.userPost.username}} : {{this.userPost.created}} </p>
             </div>
         </div>
-        <div class="comments-only col-md-3">
+        <div data-id="{{this.id}}" class="comments-only d-flex flex-row ">
             {{#each this.comments}}
-            <div data-aos="fade-left" data-aos-delay="0" data-aos-duration="1500" data-aos-once="true" class="col-md-12 text-center post-container" style="background: gray; display: flex; justify-content: space-between; align-items: flex-start;">
+            <div data-id="{{this.postId}}" data-aos="fade-left" data-aos-delay="0" data-aos-duration="1500" data-aos-once="true" class="userComments text-center" >
                 <div class="post-comment-container">
-                    <p class="comment-content">{{this.comments.content}}</p>
-                    <span class="comment-author">- Author{{this.comments.username}} : {{this.comments.created}}</span>
+                    <p class="comment-content">{{this.content}}</p>
+                    <span class="comment-author">- {{this.username}}: {{this.created}}</span>
                 </div>
             </div>
             {{/each}}
@@ -71,23 +71,6 @@
     </div>
 </div>
 
-<!-- feature (skew background) 
-<div class="jumbotron jumbotron-fluid feature" id="feature-first">
-    <div class="container my-5">
-        <div class="row justify-content-between text-center text-md-left">
-            <div data-aos="fade-right" data-aos-duration="1000" data-aos-once="true" class="col-md-6">
-                <h2 class="font-weight-bold">Take a look inside</h2>
-                <p class="my-4">Te iisque labitur eos, nec sale argumentum scribentur no,
-                    <br> augue disputando in vim. Erat fugit sit at, ius lorem deserunt deterruisset no.</p>
-                <a href="#" class="btn my-4 font-weight-bold atlas-cta cta-blue">Learn More</a>
-            </div>
-            <div data-aos="fade-left" data-aos-duration="1000" data-aos-once="true" class="col-md-6 align-self-center">
-                <img src="/img/feature-1.png" alt="Take a look inside" class="mx-auto d-block">
-            </div>
-        </div>
-    </div>
-</div>-->
-<!-- feature (green background) -->
 <div class="jumbotron jumbotron-fluid feature" id="feature-last">
     <div class="container">
         <div class="row justify-content-between text-center text-md-left">

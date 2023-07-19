@@ -68,6 +68,7 @@ router.post('/', async (req,res)=>{
      res.status(201).json({ newSession });
     }catch(err){
         console.error({message: "Error in post route: ", Error: err})
+        return res.status(500).json({message: 'Error session interrupted unexpectedly: Session will refresh in 30 min'})
     }
 })
 module.exports = router;
