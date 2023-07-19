@@ -1,8 +1,6 @@
 const router = require('express').Router();
 const Session = require('../../models/sessions');
-const User = require('../../models/users') 
 const Post = require('../../models/posts')
-const Comment = require('../../models/comments')
 const getUserPostData = require('../../public/js/SingleUserPosts')
 const fetchPostData = require('../../public/js/allUserPosts')
 const fetch = require('node-fetch');
@@ -64,6 +62,7 @@ router.get('/',checkAuth , async (req, res) => {
             // User has posts
             const postDataList = await fetchPostData();  // Fetch posts data
             console.log("postDataList: ", postDataList)
+            console.log("postDataListComments: ", postDataList[4].comments[0].content)
             return res.status(200).render('dashboard', { viewAndCommentTemplate: true, imageUrl, postDataList });
         } else {
             // User does not have any posts

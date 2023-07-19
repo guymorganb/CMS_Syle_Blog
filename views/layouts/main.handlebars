@@ -37,19 +37,6 @@
 {{{body}}}
 {{#if viewAndCommentTemplate}}
 <script src="/js/commentPost.js" defer ></script>
-<script src="/ckeditor/ckeditor.js"defer></script>
-<script>
-  CKEDITOR.replace('comments', {
-    height: 100,
-    width: '100%',
-    toolbarGroups: [
-        { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-        { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align' ] },
-        { name: 'links' },
-    ],
-    removeButtons: 'Underline,Subscript,Superscript,Anchor,Styles,Specialchar,Print'
-});
-</script>
 {{/if}}
 {{#if isDashboardTemplate}}
 <script src="/js/ping.js" defer ></script>

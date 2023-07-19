@@ -2,7 +2,7 @@
  * Express router
  */
 const router = require('express').Router();
-//const commentRoutes = require('./comment_routes');
+const editPost = require('./api/edit_posts');
 const dashboard = require('./api/dashboard_routes');
 const contact = require('./api/contact_routes');
 const login = require('./api/login_routes')
@@ -24,6 +24,8 @@ router.use('/logout', logout)
 router.use('/contact', contact)
 // for ping
 router.use('/ping', ping)
+// route for post edits/comments/deletes
+router.use('/editpost', editPost)
 
 
 router.use((req,res) =>{
