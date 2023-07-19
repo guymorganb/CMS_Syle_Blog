@@ -9,6 +9,10 @@ h1.metallic-text {
     animation: ColorChange 5s infinite;
     text-shadow: 0px 0px 5px #fff, 0px 0px 10px #fff, 0px 0px 15px #fff, 0px 0px 20px #fff;
 }
+.allPosts{
+    display: flex;
+    flex-direction: column-reverse;
+}
 h2 {
     background-color: #f0f0f0; /* light grey background */
     padding: 20px; /* space around text */
@@ -24,6 +28,10 @@ h2 {
     margin: auto; /* center the element */
 }
 
+.mx-auto{
+    padding-top: 5px !important;
+    border-radius: 8px;
+}
 @keyframes ColorChange {
     0% {-webkit-text-fill-color: #747474;}
     25% {-webkit-text-fill-color: #a7a7a7;}

@@ -32,9 +32,9 @@
 <!-- three-blcok -->
 <div class="container my-5 py-2">
     
-    <h2 class="text-center font-weight-bold my-5">Most Recent Blogs</h2>
+    <h2 class="text-center font-weight-bold my-5">Recent  Blogs</h2>
    
-    <div class="col-12">
+    <div class="col-12 allPosts">
 {{#if viewAndCommentTemplate}}
   {{> viewAndComment}}
 {{/if}}
@@ -50,7 +50,7 @@
                 <h5 class="post-title">{{this.userPost.title}}</h5>
                 <span class="post-author">- {{this.userPost.username}} : {{this.userPost.created}}</span>
             </div>
-                <p class="post-content">{{this.userPost.content}}{{this.userPost.username}} : {{this.userPost.created}} </p>
+                <p>{{{this.userPost.content}}}{{this.userPost.username}} : {{this.userPost.created}} </p>
             </div>
         </div>
         <div data-id="{{this.id}}" class="comments-only d-flex flex-row ">
