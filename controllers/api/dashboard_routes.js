@@ -61,8 +61,6 @@ router.get('/',checkAuth , async (req, res) => {
         if (userHasPosts) {
             // User has posts
             const postDataList = await fetchPostData();  // Fetch posts data
-            console.log("postDataList: ", postDataList)
-            console.log("postDataListComments: ", postDataList[4].comments[0].content)
             return res.status(200).render('dashboard', { viewAndCommentTemplate: true, imageUrl, postDataList });
         } else {
             // User does not have any posts
