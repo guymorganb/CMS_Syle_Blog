@@ -1,7 +1,4 @@
 const router = require('express').Router();
-const Comment  = require('../../models/comments')
-const Post = require('../../models/posts')
-const User = require('../../models/users')
 const Session = require('../../models/sessions');
 const fetch = require('node-fetch');
 const fetchPostData = require('../../public/js/allUserPosts')

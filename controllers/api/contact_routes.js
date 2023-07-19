@@ -3,7 +3,6 @@
  */
 const router = require('express').Router();
 const Session = require('../../models/sessions');
-const User = require('../../models/users') 
 
 // auth user
 //its probably best to use a dedicated middleware for authorization like passport.js
