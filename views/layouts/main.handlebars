@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Atlas</title>
+    <title>CMS Blog</title>
     <link rel="icon" href="/img/tech2.png" sizes="32x32" type="image/png">
     <!-- custom.css -->
     <link rel="stylesheet" href="/css/custom.css">
@@ -33,15 +33,16 @@
     <!-- AOS -->
     <link rel="stylesheet" href="/css/aos.css">
 </head>
+<!-- All templates got through the {{{body}}} all files that are in views -->
 <body>
 {{{body}}}
+</body>
 {{#if viewAndCommentTemplate}}
 <script src="/js/commentPost.js" defer ></script>
 {{/if}}
 {{#if isDashboardTemplate}}
 <script src="/js/ping.js" defer ></script>
 {{/if}}
-</body>
 {{#if isConfirmLogOut}}
 <script src="/js/logout.js" defer ></script>
 {{/if}}

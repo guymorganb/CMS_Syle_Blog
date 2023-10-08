@@ -19,7 +19,7 @@ const init = () => {
                     event.target.dataset.cloneCreated = true; // Set the attribute to prevent multiple clones
                 }
 
-                // Create a string with your HTML
+                // Create a string clone
                 let cloneString = `
                 <div class="userComments" data-aos="fade-left" data-aos-delay="0" data-aos-duration="1500" data-aos-once="true" class="col-md-8 text-center" >
                     <div class="post-comment-container">

@@ -39,8 +39,6 @@ router.post('/', async (req,res)=>{
        res.status(400).json({message: "Incorrect email or password"});
        return;
      }
-
-      // Create a new session for the user that will expire in 1 hour
       let expiresAt = new Date();
      // Set the initial expiration time of the session for 30 minutes
       expiresAt.setMinutes(expiresAt.getMinutes() + 30); 
@@ -54,9 +52,11 @@ router.post('/', async (req,res)=>{
       });
 
      // sets the express-session as active
-     req.session.user_id = userData.id;
-     req.session.active = true;
-     await req.session.save()
+     req.session.save(() => {
+        req.session.user_id = userData.id;
+        req.session.logged_in = true;
+        res.json({ user: userData, message: 'You are now logged in!' });
+    });
       
      // set the users status to active in the database
      const userSession = await Session.findOne({where: { user_id: userData.id }})

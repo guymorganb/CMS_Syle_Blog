@@ -7,37 +7,39 @@ const chalk = require('chalk');
 // this checks if the session is valid and removes any invalid session tokens
 // it also fixes the session if the server somehow dies
 async function checkSession(req, res, next){
-    const sessionToken = req.cookies.session_token;
-    if (!sessionToken) {
-      // There's no session token in the user's cookies. They are not logged in.
+  const sessionToken = req.cookies.session_token;
+  if (!sessionToken) {
+    // There's no session token in the user's cookies. They are not logged in.
+    next();
+    return;
+  }
+  try {
+    // Retrieve the session using the token
+    const session = await Session.findOne({
+      where: {
+        session_token: sessionToken
+      }
+    });
+    
+    if (!session) {
+      // There's no session matching the user's token in the database. They are not logged in.
+      await res.clearCookie('session_token'); // Clear the invalid token
+      console.log("Session cleared")
       next();
       return;
     }
-    try {
-      // Retrieve the session using the token
-      const session = await Session.findOne({
-        where: {
-          session_token: sessionToken
-        }
-      });
-      
-      if (!session) {
-        // There's no session matching the user's token in the database. They are not logged in.
-        await res.clearCookie('session_token'); // Clear the invalid token
-        console.log("Session cleared")
-        next();
-        return;
-      }
-      // The session token is valid. reset session values as a backup in event of server disruption
-      req.session.user_id = session.user_id
-      req.session.active = true;
-      await req.session.save(),
-      next();
-      console.log(chalk.blue("Session is valid, browser and Database match: "), chalk.green(req.cookies.session_token), "|", chalk.blue("Session user_id: "), chalk.green(req.session.user_id))
-    } catch (err) {
-      console.error('Error validating session token: ', err);
-      next(err);
-    }
+    // The session token is valid. reset session values as a backup in event of server disruption
+    req.session.save(() => {
+      req.session.user_id = session.user_id;
+      req.session.logged_in = true;
+      res.json({ user: userData, message: 'You are now logged in!' });
+    });
+    next();
+    console.log(chalk.blue("Session is valid, browser and Database match: "), chalk.green(req.cookies.session_token), "|", chalk.blue("Session user_id: "), chalk.green(req.session.user_id))
+  } catch (err) {
+    console.error('Error validating session token: ', err);
+    next(err);
+  }
 }
 
 // function to randomize the background image but still call the database

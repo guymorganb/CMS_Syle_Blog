@@ -29,7 +29,7 @@ router.get('/', (req, res) => {
 // validate their email is good and not a duplicate
 router.post('/create', async (req,res)=>{
     let imageUrl;
-    if(req.body){
+    if(req.body) {
         userData = {
             first_name: req.body.fName,
             last_name: req.body.lName,
@@ -40,7 +40,7 @@ router.post('/create', async (req,res)=>{
             dob: req.body.dob,
             zip: parseInt(req.body.zip),
         }
-    } else{
+    } else {
         res.status(400)
         return
     }
@@ -98,7 +98,6 @@ router.post('/newuser/credentials', async (req, res) => {
             res.status(409).json({ message: 'Username is not available.' });
             return;
         }
-
         userData = await User.create({
             first_name: userData.first_name,
             last_name: userData.last_name,
@@ -127,12 +126,12 @@ router.post('/newuser/credentials', async (req, res) => {
             active: true,
             minutes_active: 0,  // update this value as needed
         });
-
         // sets the express-session as active and the user_id
-        req.session.user_id = newUserData.id;
-        req.session.active = true;
-        await req.session.save();
-
+        req.session.save(() => {
+            req.session.user_id = newUserData.id;
+            req.session.logged_in = true;
+            res.json({ user: userData, message: 'You are now logged in!' });
+        });
         // set the users status to active in the database
         const userSession = await Session.findOne({ where: { session_token: sessionToken } });
         if (userSession) {
@@ -146,3 +145,51 @@ router.post('/newuser/credentials', async (req, res) => {
     }
 });
 module.exports = router;
+
+// example of how to implement Re-Captcha
+
+/**
+ * Step 1: Include reCAPTCHA on the Front-end
+
+Sign up for an API key pair for your site at the Google's reCAPTCHA website. Once you've got the keys, include the reCAPTCHA script in your front-end form:
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+Then, include this in your form:
+<div class="g-recaptcha" data-sitekey="your-site-key"></div>
+Upon successful completion of the reCAPTCHA, a new field g-recaptcha-response will be automatically added to your form when the form is submitted.
+ */
+
+/**
+ * Step 2: Validate reCAPTCHA on the Server-side
+
+In your Express.js route, use a library like axios to make an HTTP POST request to Google's reCAPTCHA API and verify the user's response. You can add this as a middleware function before creating the new user.
+
+Here is an example of how you might do this:
+const axios = require('axios');  // install this package if you haven't already
+
+async function verifyCaptcha(req, res, next) {
+    const recaptchaResponse = req.body['g-recaptcha-response'];
+    const secretKey = "your-secret-key";  // your reCAPTCHA secret key
+
+    // make a request to the Google's reCAPTCHA API
+    const result = await axios.post(`https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${recaptchaResponse}`, {}, {
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
+        },
+    });
+    // check the response from Google's reCAPTCHA API
+    if (!result.data.success) {
+        return res.status(400).json({message: "reCAPTCHA verification failed."});
+    }
+    // if everything is ok, proceed with the next middleware
+    next();
+}
+router.post('/newuser', verifyCaptcha, async (req,res) => {
+    // Your existing code
+});
+
+In this code, verifyCaptcha is a middleware function that gets the reCAPTCHA response from the form, sends a request to Google's reCAPTCHA API to validate the response, and checks the result. 
+If the reCAPTCHA validation fails, it sends a 400 status code with an error message. Otherwise, it calls next() to proceed to the next middleware, which is your user creation route.
+
+Please replace "your-secret-key" with your own secret key that you get from Google's reCAPTCHA site. Also, install the axios package with npm install axios if you haven't already installed it.
+ */

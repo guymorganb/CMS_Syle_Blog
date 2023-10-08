@@ -14,7 +14,7 @@ const hashPassword = async (newUserData) => {
 
 class User extends Model{
   // this function uses bcrypt to  validate a pasword with the saved hashed password
-  checkPassword(loginPw) {
+  static async checkPassword(loginPw) {
     // console.log(`loginPw: ${loginPw}, this.password: ${this.password_hash}`);
     return bcrypt.compareSync(loginPw, this.password_hash);
   }
