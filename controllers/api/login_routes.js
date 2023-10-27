@@ -65,7 +65,7 @@ router.post('/', async (req,res)=>{
         await userSession.save();
     }
     // send back the newSession info to user
-     res.status(201)
+     res.json({ newSession });
     }catch(err){
         console.error({message: "Error in post route: ", Error: err})
         return res.status(500).json({message: 'Error session interrupted unexpectedly: Session will refresh in 30 min'})
