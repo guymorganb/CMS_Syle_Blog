@@ -130,7 +130,6 @@ router.post('/newuser/credentials', async (req, res) => {
         req.session.save(() => {
             req.session.user_id = newUserData.id;
             req.session.logged_in = true;
-            res.json({ user: userData, message: 'You are now logged in!' });
         });
         // set the users status to active in the database
         const userSession = await Session.findOne({ where: { session_token: sessionToken } });
