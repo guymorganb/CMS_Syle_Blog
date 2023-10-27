@@ -32,7 +32,6 @@ async function checkSession(req, res, next){
     req.session.save(() => {
       req.session.user_id = session.user_id;
       req.session.logged_in = true;
-      res.json({ user: userData, message: 'You are now logged in!' });
     });
     next();
     console.log(chalk.blue("Session is valid, browser and Database match: "), chalk.green(req.cookies.session_token), "|", chalk.blue("Session user_id: "), chalk.green(req.session.user_id))
